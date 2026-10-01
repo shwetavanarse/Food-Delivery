@@ -1,4 +1,4 @@
-import streamlit as st
+nimport streamlit as st
 
 from food_delivery import (
     Customer,
@@ -582,10 +582,219 @@ with restaurant_col2:
 
 st.divider()
 
+# ============================================================
+# SMART FOOD ORDERING
+# ============================================================
+
+st.header("🛒 Smart Food Ordering")
+
+st.caption(
+    "Select your favourite items and create your order."
+)
+
+
+# ------------------------------------------------------------
+# CHECK CUSTOMER
+# ------------------------------------------------------------
+
+if st.session_state.customer is None:
+
+    st.info(
+        "👤 Please create a customer profile first "
+        "before placing an order."
+    )
+
+else:
+
+    customer = st.session_state.customer
+
+    # --------------------------------------------------------
+    # CUSTOMER ORDER INFO
+    # --------------------------------------------------------
+
+    order_info_col1, order_info_col2 = st.columns(2)
+
+    with order_info_col1:
+
+        st.info(
+            f"👤 Ordering for **{customer._name}**"
+        )
+
+    with order_info_col2:
+
+        st.info(
+            f"💰 Wallet Balance: "
+            f"**₹{customer._wallet_balance:.2f}**"
+        )
+
+
+    st.divider()
+
+
+    # --------------------------------------------------------
+    # FOOD SELECTION
+    # --------------------------------------------------------
+
+    st.subheader("🍽️ Select Food Items")
+
+    item_names = [
+        item.name
+        for item in restaurant.get_menu()
+    ]
+
+    selected_items = st.multiselect(
+        "Choose one or more items",
+        item_names,
+        placeholder="Select food items..."
+    )
+
+
+    # --------------------------------------------------------
+    # BILL PREVIEW
+    # --------------------------------------------------------
+
+    if selected_items:
+
+        selected_objects = [
+            item
+            for item in restaurant.get_menu()
+            if item.name in selected_items
+        ]
+
+        subtotal = sum(
+            item.price
+            for item in selected_objects
+        )
+
+        gst = subtotal * 0.05
+
+        packaging_fee = 20
+
+        total = (
+            subtotal
+            + gst
+            + packaging_fee
+        )
+
+
+        st.divider()
+
+        st.subheader("🧾 Bill Summary")
+
+
+        bill_col1, bill_col2 = st.columns(
+            [2, 1]
+        )
+
+
+        with bill_col1:
+
+            st.write("**Selected Items**")
+
+            for item in selected_objects:
+
+                icon = {
+                    "Veg Burger": "🍔",
+                    "Pizza": "🍕",
+                    "Paneer Wrap": "🌯",
+                    "Chicken Biryani": "🍗",
+                    "French Fries": "🍟"
+                }.get(
+                    item.name,
+                    "🍽️"
+                )
+
+                st.write(
+                    f"{icon} {item.name} — "
+                    f"₹{item.price:.2f}"
+                )
+
+
+        with bill_col2:
+
+            st.metric(
+                "Subtotal",
+                f"₹{subtotal:.2f}"
+            )
+
+            st.metric(
+                "GST (5%)",
+                f"₹{gst:.2f}"
+            )
+
+            st.metric(
+                "Packaging Fee",
+                f"₹{packaging_fee:.2f}"
+            )
+
+            st.metric(
+                "Total Amount",
+                f"₹{total:.2f}"
+            )
+
+
+        st.divider()
+
+
+        # ----------------------------------------------------
+        # PLACE ORDER
+        # ----------------------------------------------------
+
+        if st.button(
+            "🛒 Place Order",
+            type="primary",
+            use_container_width=True
+        ):
+
+            try:
+
+                order = customer.place_order(
+                    restaurant,
+                    selected_objects
+                )
+
+                st.session_state.order = order
+
+                st.success(
+                    f"🎉 Order "
+                    f"**{order._order_id}** "
+                    f"placed successfully!"
+                )
+
+                st.info(
+                    f"📦 Order Status: "
+                    f"**{order._status}**"
+                )
+
+                st.warning(
+                    f"🔐 Delivery OTP: "
+                    f"**{order._otp}** "
+                    f"(Demo purpose)"
+                )
+
+                st.rerun()
+
+
+            except Exception as e:
+
+                st.error(
+                    f"Unable to place order: {e}"
+                )
+
+
+    else:
+
+        st.info(
+            "🍽️ Select at least one food item "
+            "to see your bill."
+        )
+
 
 # ============================================================
 # CURRENT ORDER
 # ============================================================
+
+st.divider()
 
 st.header("📦 Current Order")
 
@@ -593,7 +802,13 @@ if st.session_state.order:
 
     order = st.session_state.order
 
+
+    # --------------------------------------------------------
+    # ORDER STATUS
+    # --------------------------------------------------------
+
     order_col1, order_col2, order_col3 = st.columns(3)
+
 
     with order_col1:
 
@@ -602,6 +817,7 @@ if st.session_state.order:
             order._order_id
         )
 
+
     with order_col2:
 
         st.metric(
@@ -609,21 +825,28 @@ if st.session_state.order:
             order._status
         )
 
+
     with order_col3:
 
         st.metric(
-            "Bill",
+            "Total Bill",
             f"₹{order.calculate_bill():.2f}"
         )
+
+
+    st.success(
+        "Your order has been successfully created."
+    )
+
 
 else:
 
     st.info(
-        "No order has been placed yet."
+        "🛒 No order has been placed yet."
     )
 
 
-st.divider()
+    
 
 
 # ============================================================
