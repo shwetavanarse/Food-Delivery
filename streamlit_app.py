@@ -32,6 +32,39 @@ if "delivery_partner" not in st.session_state:
 if "order" not in st.session_state:
     st.session_state.order = None
 
+if "restaurant" not in st.session_state:
+
+    restaurant = Restaurant(
+        "Food Corner",
+        "Sambhajinagar"
+    )
+
+    restaurant.add_item(
+        MenuItem("Veg Burger", 120, True)
+    )
+
+    restaurant.add_item(
+        MenuItem("Pizza", 250, True)
+    )
+
+    restaurant.add_item(
+        MenuItem("Paneer Wrap", 150, True)
+    )
+
+    restaurant.add_item(
+        MenuItem("Chicken Biryani", 220, False)
+    )
+
+    restaurant.add_item(
+        MenuItem("French Fries", 100, True)
+    )
+
+    st.session_state.restaurant = restaurant
+
+
+# IMPORTANT
+restaurant = st.session_state.restaurant
+
 
 # ============================================================
 # RESTAURANT
@@ -58,7 +91,7 @@ st.divider()
 # MENU ITEMS
 # ------------------------------------------------------------
 
-menu_items = Restaurant.get_menu()
+menu_items = restaurant.get_menu()
 
 # Display 3 food cards per row
 for i in range(0, len(menu_items), 3):
