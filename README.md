@@ -249,7 +249,7 @@ Designing a small system from scratch with abstract base classes, inheritance, a
 
 ## 👤 Author
 
-**Shweta Vanarse**, built as *Project 3: Food Delivery System*.
+**Shweta Vanarse**, built as *Food Delivery System*.
 
 ---
 
