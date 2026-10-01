@@ -1426,6 +1426,91 @@ else:
         )
 
 # ============================================================
+# ANALYTICS VISUALIZATIONS
+# ============================================================
+
+if orders:
+
+    st.divider()
+
+    st.subheader("📈 Performance Dashboard")
+
+    # --------------------------------------------------------
+    # ORDER STATUS CHART
+    # --------------------------------------------------------
+
+    status_chart_data = {
+        "Status": [
+            "Placed",
+            "Accepted",
+            "Delivered"
+        ],
+        "Orders": [
+            placed_orders,
+            accepted_orders,
+            delivered_orders
+        ]
+    }
+
+    st.write("### 📦 Order Status Distribution")
+
+    st.bar_chart(
+        status_chart_data,
+        x="Status",
+        y="Orders"
+    )
+
+
+    # --------------------------------------------------------
+    # POPULAR FOOD CHART
+    # --------------------------------------------------------
+
+    if sorted_items:
+
+        st.write("### 🍽️ Most Popular Food Items")
+
+        popular_food_data = {
+            "Food Item": [
+                item[0]
+                for item in sorted_items
+            ],
+            "Orders": [
+                item[1]
+                for item in sorted_items
+            ]
+        }
+
+        st.bar_chart(
+            popular_food_data,
+            x="Food Item",
+            y="Orders"
+        )
+
+
+    # --------------------------------------------------------
+    # FOOD PREFERENCE CHART
+    # --------------------------------------------------------
+
+    st.write("### 🥗 Customer Food Preference")
+
+    preference_data = {
+        "Food Type": [
+            "Vegetarian",
+            "Non-Vegetarian"
+        ],
+        "Orders": [
+            veg_orders,
+            nonveg_orders
+        ]
+    }
+
+    st.bar_chart(
+        preference_data,
+        x="Food Type",
+        y="Orders"
+    )
+    
+# ============================================================
 # QUICK START
 # ============================================================
 
