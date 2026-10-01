@@ -964,4 +964,423 @@ elif page == "🛵 Delivery":
             "Place an order before assigning a delivery partner."
         )
 
-    elif st.session_state.deliver
+    elif st.session_state.delivery_partner is None:
+
+        st.info(
+            "Create a delivery partner first."
+        )
+
+    else:
+
+        order = st.session_state.order
+        partner = st.session_state.delivery_partner
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+
+            st.write(
+                f"**Order:** {order._order_id}"
+            )
+
+            st.write(
+                f"**Status:** {order._status}"
+            )
+
+        with col2:
+
+            if partner.is_available:
+
+                if st.button(
+                    "✅ Accept Order",
+                    type="primary",
+                    use_container_width=True
+                ):
+
+                    partner.accept_order(order)
+
+                    st.success(
+                        f"Order {order._order_id} accepted!"
+                    )
+
+                    st.rerun()
+
+            else:
+
+                st.warning(
+                    "Delivery partner is currently busy."
+                )
+
+    st.divider()
+
+    # --------------------------------------------------------
+    # COMPLETE DELIVERY
+    # --------------------------------------------------------
+
+    st.subheader("🔐 Complete Delivery")
+
+    if st.session_state.order is None:
+
+        st.info(
+            "No order available."
+        )
+
+    elif st.session_state.delivery_partner is None:
+
+        st.info(
+            "Create a delivery partner first."
+        )
+
+    else:
+
+        order = st.session_state.order
+        partner = st.session_state.delivery_partner
+
+        if order._status == "Placed":
+
+            st.warning(
+                "⚠️ Accept the order before completing delivery."
+            )
+
+        elif order._status == "Accepted":
+
+            st.info(
+                "📍 Order is out for delivery. "
+                "Enter the customer's OTP."
+            )
+
+            otp = st.number_input(
+                "Enter 4-digit OTP",
+                min_value=1000,
+                max_value=9999,
+                step=1,
+                key="delivery_otp"
+            )
+
+            if st.button(
+                "🎉 Complete Delivery",
+                type="primary",
+                use_container_width=True
+            ):
+
+                partner.deliver(
+                    order,
+                    int(otp)
+                )
+
+                if order._status == "Delivered":
+
+                    st.success(
+                        f"🎉 Order {order._order_id} "
+                        "delivered successfully!"
+                    )
+
+                    st.rerun()
+
+                else:
+
+                    st.error(
+                        "❌ Incorrect OTP."
+                    )
+
+        elif order._status == "Delivered":
+
+            st.success(
+                "🎉 This order has already been delivered."
+            )
+
+
+# ============================================================
+# ANALYTICS
+# ============================================================
+
+elif page == "📊 Analytics":
+
+    st.markdown(
+        '<div class="section-title">📊 Restaurant Analytics</div>',
+        unsafe_allow_html=True,
+    )
+
+    st.caption(
+        "Understand orders, revenue and customer preferences."
+    )
+
+    st.divider()
+
+    if customer:
+
+        orders = customer.order_history
+
+    else:
+
+        orders = []
+
+    # --------------------------------------------------------
+    # KPIs
+    # --------------------------------------------------------
+
+    total_orders = len(orders)
+
+    total_revenue = sum(
+        order.calculate_bill()
+        for order in orders
+    )
+
+    average_order_value = (
+        total_revenue / total_orders
+        if total_orders
+        else 0
+    )
+
+    delivered_orders = sum(
+        1
+        for order in orders
+        if order._status == "Delivered"
+    )
+
+    placed_orders = sum(
+        1
+        for order in orders
+        if order._status == "Placed"
+    )
+
+    accepted_orders = sum(
+        1
+        for order in orders
+        if order._status == "Accepted"
+    )
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+
+        st.metric(
+            "📦 Total Orders",
+            total_orders
+        )
+
+    with col2:
+
+        st.metric(
+            "💰 Revenue",
+            f"₹{total_revenue:.2f}"
+        )
+
+    with col3:
+
+        st.metric(
+            "📈 Avg Order Value",
+            f"₹{average_order_value:.2f}"
+        )
+
+    with col4:
+
+        st.metric(
+            "🎉 Delivered",
+            delivered_orders
+        )
+
+    st.divider()
+
+    # --------------------------------------------------------
+    # ORDER STATUS
+    # --------------------------------------------------------
+
+    st.subheader("📦 Order Status")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+
+        st.metric(
+            "🟡 Placed",
+            placed_orders
+        )
+
+    with col2:
+
+        st.metric(
+            "🔵 Accepted",
+            accepted_orders
+        )
+
+    with col3:
+
+        st.metric(
+            "🟢 Delivered",
+            delivered_orders
+        )
+
+    if not orders:
+
+        st.divider()
+
+        st.info(
+            "Place orders to generate restaurant analytics."
+        )
+
+    else:
+
+        # ----------------------------------------------------
+        # ITEM COUNTS
+        # ----------------------------------------------------
+
+        item_counts = {}
+
+        for order in orders:
+
+            for item in order._items:
+
+                item_counts[item.name] = (
+                    item_counts.get(item.name, 0) + 1
+                )
+
+        sorted_items = sorted(
+            item_counts.items(),
+            key=lambda x: x[1],
+            reverse=True
+        )
+
+        st.divider()
+
+        st.subheader("🍽️ Popular Food Items")
+
+        for rank, (name, count) in enumerate(
+            sorted_items,
+            start=1
+        ):
+
+            st.write(
+                f"**#{rank} {name}** — "
+                f"{count} order(s)"
+            )
+
+        st.divider()
+
+        # ----------------------------------------------------
+        # FOOD PREFERENCE
+        # ----------------------------------------------------
+
+        st.subheader("🥗 Food Preference")
+
+        veg_orders = 0
+        nonveg_orders = 0
+
+        for order in orders:
+
+            for item in order._items:
+
+                if item.is_veg:
+                    veg_orders += 1
+                else:
+                    nonveg_orders += 1
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+
+            st.metric(
+                "🟢 Vegetarian",
+                veg_orders
+            )
+
+        with col2:
+
+            st.metric(
+                "🔴 Non-Vegetarian",
+                nonveg_orders
+            )
+
+        st.divider()
+
+        # ----------------------------------------------------
+        # CHARTS
+        # ----------------------------------------------------
+
+        st.subheader("📈 Performance Dashboard")
+
+        chart_col1, chart_col2 = st.columns(2)
+
+        with chart_col1:
+
+            st.write("Order Status")
+
+            status_data = {
+                "Placed": placed_orders,
+                "Accepted": accepted_orders,
+                "Delivered": delivered_orders,
+            }
+
+            st.bar_chart(status_data)
+
+        with chart_col2:
+
+            st.write("Popular Food")
+
+            popular_data = {
+                item_name: count
+                for item_name, count
+                in sorted_items
+            }
+
+            st.bar_chart(popular_data)
+
+        st.divider()
+
+        # ----------------------------------------------------
+        # BUSINESS INSIGHTS
+        # ----------------------------------------------------
+
+        st.subheader("💡 Business Insights")
+
+        top_item = sorted_items[0][0]
+        top_item_count = sorted_items[0][1]
+
+        st.success(
+            f"🏆 Most ordered item: **{top_item}** "
+            f"with {top_item_count} order(s)."
+        )
+
+        st.info(
+            f"💰 Total restaurant revenue: "
+            f"**₹{total_revenue:.2f}**"
+        )
+
+        st.info(
+            f"📈 Average order value: "
+            f"**₹{average_order_value:.2f}**"
+        )
+
+        if veg_orders > nonveg_orders:
+
+            st.success(
+                "🥗 Vegetarian food is currently "
+                "more popular."
+            )
+
+        elif nonveg_orders > veg_orders:
+
+            st.warning(
+                "🍗 Non-vegetarian food is currently "
+                "more popular."
+            )
+
+        else:
+
+            st.info(
+                "⚖️ Both food categories have "
+                "equal order counts."
+            )
+
+
+# ============================================================
+# FOOTER
+# ============================================================
+
+st.divider()
+
+st.caption(
+    "🍔 Smart Food Corner • "
+    "Python OOP + Streamlit • "
+    "Portfolio Project"
+)
