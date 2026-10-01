@@ -44,7 +44,7 @@ if "order" not in st.session_state:
 st.header("🍽️ Our Menu")
 
 st.write(
-    f"**{Restaurant.name}** • 📍 {Restaurant.location}"
+    f"**{Restaurant}** • 📍 {Restaurant.location}"
 )
 
 st.caption(
