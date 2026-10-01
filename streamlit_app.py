@@ -15,194 +15,77 @@ st.set_page_config(
 
 
 # ============================================================
-# CUSTOM CSS — VISUAL CHANGES ONLY
+# SIMPLE CSS
 # ============================================================
 
 st.markdown(
     """
     <style>
+        /* Main background */
+        .stApp {
+            background-color: #fffaf7;
+        }
 
-    /* ---------- Main page ---------- */
+        /* Main content width */
+        .block-container {
+            max-width: 1200px;
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+        }
 
-    .stApp {
-        background: #fffaf7;
-    }
+        /* Headings */
+        h1 {
+            color: #e85d2a !important;
+            font-weight: 800 !important;
+        }
 
-    .block-container {
-        padding-top: 2rem;
-        padding-bottom: 3rem;
-        max-width: 1250px;
-    }
+        h2 {
+            color: #252525 !important;
+            font-weight: 750 !important;
+        }
 
-    /* ---------- Header ---------- */
+        h3 {
+            color: #333333 !important;
+        }
 
-    .main-title {
-        background: linear-gradient(
-            135deg,
-            #ff6b35,
-            #ff8f5c
-        );
-        color: white;
-        padding: 28px 32px;
-        border-radius: 18px;
-        margin-bottom: 8px;
-        box-shadow: 0 8px 25px rgba(255, 107, 53, 0.18);
-    }
+        /* Buttons */
+        .stButton > button {
+            border-radius: 10px;
+            font-weight: 600;
+            min-height: 42px;
+        }
 
-    .main-title h1 {
-        margin: 0;
-        font-size: 34px;
-        font-weight: 800;
-    }
+        /* Input boxes */
+        input {
+            border-radius: 8px !important;
+        }
 
-    .main-title p {
-        margin: 7px 0 0 0;
-        font-size: 14px;
-        opacity: 0.92;
-    }
+        /* Select boxes */
+        div[data-baseweb="select"] > div {
+            border-radius: 8px !important;
+        }
 
-    /* ---------- Section headers ---------- */
+        /* Metrics */
+        div[data-testid="stMetric"] {
+            background-color: white;
+            border: 1px solid #f0ddd5;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+        }
 
-    h2 {
-        color: #222222 !important;
-        font-weight: 750 !important;
-        margin-top: 10px !important;
-    }
+        /* Tables */
+        div[data-testid="stTable"] {
+            background-color: white;
+            border-radius: 12px;
+            border: 1px solid #f0ddd5;
+            overflow: hidden;
+        }
 
-    /* ---------- Input boxes ---------- */
-
-    div[data-baseweb="input"] {
-        border-radius: 10px;
-    }
-
-    div[data-baseweb="select"] > div {
-        border-radius: 10px;
-    }
-
-    /* ---------- Buttons ---------- */
-
-    .stButton > button {
-        border-radius: 10px;
-        font-weight: 650;
-        border: 1px solid #ff6b35;
-        min-height: 42px;
-        transition: all 0.2s ease;
-    }
-
-    .stButton > button:hover {
-        border-color: #e95725;
-        transform: translateY(-1px);
-        box-shadow: 0 5px 15px rgba(255, 107, 53, 0.15);
-    }
-
-    /* ---------- Metrics ---------- */
-
-    div[data-testid="stMetric"] {
-        background: white;
-        border: 1px solid #f0dfd8;
-        border-radius: 14px;
-        padding: 16px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.035);
-    }
-
-    div[data-testid="stMetricLabel"] {
-        color: #777777;
-    }
-
-    div[data-testid="stMetricValue"] {
-        color: #ff6330;
-        font-weight: 750;
-    }
-
-    /* ---------- Table ---------- */
-
-    div[data-testid="stTable"] {
-        background: white;
-        border-radius: 14px;
-        overflow: hidden;
-        border: 1px solid #f0dfd8;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.035);
-    }
-
-    /* ---------- Alerts ---------- */
-
-    div[data-testid="stAlert"] {
-        border-radius: 12px;
-    }
-
-    /* ---------- Info cards ---------- */
-
-    .info-card {
-        background: white;
-        border: 1px solid #f0dfd8;
-        border-left: 5px solid #ff6b35;
-        border-radius: 12px;
-        padding: 15px 18px;
-        margin: 8px 0 15px 0;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.035);
-    }
-
-    .info-title {
-        color: #333333;
-        font-weight: 700;
-        font-size: 15px;
-    }
-
-    .info-text {
-        color: #777777;
-        font-size: 13px;
-        margin-top: 5px;
-    }
-
-    /* ---------- Bill card ---------- */
-
-    .bill-card {
-        background: linear-gradient(
-            135deg,
-            #fff1ea,
-            #fffaf7
-        );
-        border: 1px solid #ffd7c7;
-        border-radius: 14px;
-        padding: 18px;
-        margin-top: 12px;
-    }
-
-    .bill-title {
-        font-size: 16px;
-        font-weight: 750;
-        color: #333333;
-        margin-bottom: 10px;
-    }
-
-    .bill-total {
-        font-size: 22px;
-        font-weight: 800;
-        color: #ff6330;
-    }
-
-    /* ---------- Restaurant badge ---------- */
-
-    .restaurant-badge {
-        display: inline-block;
-        background: #fff0e9;
-        color: #e95725;
-        padding: 7px 13px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 700;
-        margin-bottom: 12px;
-    }
-
-    /* ---------- Footer ---------- */
-
-    .footer {
-        text-align: center;
-        color: #999999;
-        font-size: 12px;
-        padding: 25px 0 5px 0;
-    }
-
+        /* Alerts */
+        div[data-testid="stAlert"] {
+            border-radius: 10px;
+        }
     </style>
     """,
     unsafe_allow_html=True,
@@ -260,31 +143,11 @@ restaurant = st.session_state.restaurant
 # HEADER
 # ============================================================
 
-st.markdown(
-    """
-    <div class="main-title">
-        <h1>🍔 Food Delivery System</h1>
-        <p>
-            A simple and interactive food delivery application
-            built with Python OOP and Streamlit.
-        </p>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+st.title("🍔 Food Delivery System")
 
-
-# ============================================================
-# RESTAURANT INFO
-# ============================================================
-
-st.markdown(
-    f"""
-    <div class="restaurant-badge">
-        🍽️ {restaurant.name} &nbsp; • &nbsp; 📍 {restaurant.location}
-    </div>
-    """,
-    unsafe_allow_html=True,
+st.caption(
+    "Simple and interactive Streamlit interface "
+    "for the OOP Food Delivery project"
 )
 
 st.divider()
@@ -301,28 +164,32 @@ col1, col2, col3 = st.columns(3)
 with col1:
     customer_name = st.text_input(
         "Customer Name",
-        placeholder="Enter your name",
+        placeholder="Enter customer name"
     )
 
 with col2:
     customer_phone = st.text_input(
         "Phone",
-        placeholder="Enter phone number",
+        placeholder="Enter phone number"
     )
 
 with col3:
     customer_address = st.text_input(
         "Address",
-        placeholder="Enter delivery address",
+        placeholder="Enter delivery address"
     )
 
 
 if st.button(
     "👤 Create Customer",
-    type="primary",
+    type="primary"
 ):
 
-    if customer_name and customer_phone and customer_address:
+    if (
+        customer_name
+        and customer_phone
+        and customer_address
+    ):
 
         st.session_state.customer = Customer(
             customer_name,
@@ -345,24 +212,9 @@ if st.session_state.customer:
 
     customer = st.session_state.customer
 
-    st.markdown(
-        f"""
-        <div class="info-card">
-
-            <div class="info-title">
-                👋 Customer Profile
-            </div>
-
-            <div class="info-text">
-                <b>Name:</b> {customer._name}
-                &nbsp; | &nbsp;
-                <b>Wallet:</b>
-                ₹{customer._wallet_balance:.2f}
-            </div>
-
-        </div>
-        """,
-        unsafe_allow_html=True,
+    st.info(
+        f"👤 Customer: {customer._name}   |   "
+        f"💰 Wallet: ₹{customer._wallet_balance:.2f}"
     )
 
 
@@ -379,7 +231,7 @@ wallet_amount = st.number_input(
     "Amount",
     min_value=0.0,
     step=100.0,
-    format="%.2f",
+    format="%.2f"
 )
 
 
@@ -412,7 +264,7 @@ if st.session_state.customer:
 
     st.metric(
         "Current Wallet Balance",
-        f"₹{st.session_state.customer._wallet_balance:.2f}",
+        f"₹{st.session_state.customer._wallet_balance:.2f}"
     )
 
 
@@ -426,8 +278,10 @@ st.divider()
 st.header("3. Restaurant Menu")
 
 st.write(
-    f"**{restaurant.name}** — {restaurant.location}"
+    f"🍽️ **{restaurant.name}** — "
+    f"📍 {restaurant.location}"
 )
+
 
 menu_data = []
 
@@ -435,9 +289,9 @@ for item in restaurant.get_menu():
 
     menu_data.append(
         {
-            "🍽️ Item": item.name,
-            "💰 Price": f"₹{item.price:.2f}",
-            "🥗 Type": (
+            "Item": item.name,
+            "Price": f"₹{item.price:.2f}",
+            "Type": (
                 "🟢 Veg"
                 if item.is_veg
                 else "🔴 Non-Veg"
@@ -463,10 +317,11 @@ item_names = [
     for item in restaurant.get_menu()
 ]
 
+
 selected_items = st.multiselect(
     "Select food items",
     item_names,
-    placeholder="Choose one or more items...",
+    placeholder="Choose food items..."
 )
 
 
@@ -487,44 +342,17 @@ if selected_items:
     packaging = 20
     total = subtotal + gst + packaging
 
-    st.markdown(
-        f"""
-        <div class="bill-card">
-
-            <div class="bill-title">
-                🧾 Order Bill
-            </div>
-
-            <div>
-                Subtotal:
-                <b>₹{subtotal:.2f}</b>
-            </div>
-
-            <div>
-                GST (5%):
-                <b>₹{gst:.2f}</b>
-            </div>
-
-            <div>
-                Packaging Fee:
-                <b>₹{packaging:.2f}</b>
-            </div>
-
-            <hr>
-
-            <div class="bill-total">
-                Total: ₹{total:.2f}
-            </div>
-
-        </div>
-        """,
-        unsafe_allow_html=True,
+    st.info(
+        f"Subtotal: ₹{subtotal:.2f}  |  "
+        f"GST (5%): ₹{gst:.2f}  |  "
+        f"Packaging: ₹{packaging:.2f}  |  "
+        f"**Total: ₹{total:.2f}**"
     )
 
 
 if st.button(
     "🛒 Place Order",
-    type="primary",
+    type="primary"
 ):
 
     if st.session_state.customer is None:
@@ -584,25 +412,25 @@ if st.session_state.order:
 
         st.metric(
             "Order ID",
-            order._order_id,
+            order._order_id
         )
 
     with c2:
 
         st.metric(
             "Status",
-            order._status,
+            order._status
         )
 
     with c3:
 
         st.metric(
             "Estimated Time",
-            f"{order.estimated_time()} min",
+            f"{order.estimated_time()} min"
         )
 
     st.write(
-        f"**💳 Bill:** ₹{order.calculate_bill():.2f}"
+        f"💳 **Bill:** ₹{order.calculate_bill():.2f}"
     )
 
 else:
@@ -627,14 +455,14 @@ with col1:
 
     partner_name = st.text_input(
         "Partner Name",
-        placeholder="Enter partner name",
+        placeholder="Enter partner name"
     )
 
 with col2:
 
     partner_phone = st.text_input(
         "Partner Phone",
-        placeholder="Enter phone number",
+        placeholder="Enter phone number"
     )
 
 with col3:
@@ -644,8 +472,8 @@ with col3:
         [
             "Bike",
             "Scooter",
-            "Cycle",
-        ],
+            "Cycle"
+        ]
     )
 
 
@@ -684,25 +512,10 @@ if st.session_state.delivery_partner:
         else "Busy"
     )
 
-    st.markdown(
-        f"""
-        <div class="info-card">
-
-            <div class="info-title">
-                🛵 Delivery Partner
-            </div>
-
-            <div class="info-text">
-                <b>Partner:</b> {partner._name}
-                &nbsp; | &nbsp;
-                <b>Vehicle:</b> {partner.vehicle}
-                &nbsp; | &nbsp;
-                <b>Status:</b> {availability}
-            </div>
-
-        </div>
-        """,
-        unsafe_allow_html=True,
+    st.info(
+        f"🛵 Partner: {partner._name}   |   "
+        f"🚗 Vehicle: {partner.vehicle}   |   "
+        f"Status: {availability}"
     )
 
 
@@ -753,7 +566,7 @@ st.divider()
 
 
 # ============================================================
-# 8. OTP & DELIVERY
+# 8. OTP AND DELIVERY
 # ============================================================
 
 st.header("8. Enter OTP & Complete Delivery")
@@ -762,13 +575,13 @@ otp = st.number_input(
     "Enter 4-digit OTP",
     min_value=1000,
     max_value=9999,
-    step=1,
+    step=1
 )
 
 
 if st.button(
     "🚚 Complete Delivery",
-    type="primary",
+    type="primary"
 ):
 
     if st.session_state.order is None:
@@ -794,12 +607,12 @@ if st.button(
         order = st.session_state.order
         partner = st.session_state.delivery_partner
 
-        # Verify OTP before calling deliver()
+        # Check OTP first.
         if order.verify_otp(int(otp)):
 
             partner.deliver(
                 order,
-                int(otp),
+                int(otp)
             )
 
             st.success(
@@ -820,7 +633,7 @@ st.divider()
 
 
 # ============================================================
-# 9. FINAL SUMMARY
+# 9. DELIVERY SUMMARY
 # ============================================================
 
 st.header("9. Delivery Summary")
@@ -830,70 +643,36 @@ if st.session_state.order:
 
     order = st.session_state.order
 
-    st.markdown(
-        f"""
-        <div class="info-card">
-
-            <div class="info-title">
-                🧾 Order Summary
-            </div>
-
-            <div class="info-text">
-
-                <b>Order ID:</b>
-                #{order._order_id}
-
-                &nbsp; | &nbsp;
-
-                <b>Status:</b>
-                {order._status}
-
-                <br><br>
-
-                <b>Total Bill:</b>
-                ₹{order.calculate_bill():.2f}
-
-            </div>
-
-        </div>
-        """,
-        unsafe_allow_html=True,
+    st.write(
+        f"**Order ID:** #{order._order_id}"
     )
 
+    st.write(
+        f"**Status:** {order._status}"
+    )
+
+    st.write(
+        f"**Total Bill:** "
+        f"₹{order.calculate_bill():.2f}"
+    )
 
     if st.session_state.delivery_partner:
 
         partner = st.session_state.delivery_partner
 
-        st.markdown(
-            f"""
-            <div class="info-card">
+        st.write(
+            f"**Delivery Partner:** {partner._name}"
+        )
 
-                <div class="info-title">
-                    🛵 Delivery Information
-                </div>
-
-                <div class="info-text">
-
-                    <b>Delivery Partner:</b>
-                    {partner._name}
-
-                    &nbsp; | &nbsp;
-
-                    <b>Vehicle:</b>
-                    {partner.vehicle}
-
-                </div>
-
-            </div>
-            """,
-            unsafe_allow_html=True,
+        st.write(
+            f"**Vehicle:** {partner.vehicle}"
         )
 
 else:
 
     st.info(
-        "Complete the order flow to see the final summary."
+        "Complete the order flow to see "
+        "the final summary."
     )
 
 
@@ -901,13 +680,9 @@ else:
 # FOOTER
 # ============================================================
 
-st.markdown(
-    """
-    <div class="footer">
-        🍔 Food Delivery OOP Project
-        &nbsp; • &nbsp;
-        Built with Python + Streamlit
-    </div>
-    """,
-    unsafe_allow_html=True,
+st.divider()
+
+st.caption(
+    "🍔 Food Delivery OOP Project • "
+    "Built with Python + Streamlit"
 )
