@@ -273,7 +273,160 @@ with col3:
 
 st.divider()
 
+# ============================================================
+# CUSTOMER & WALLET
+# ============================================================
 
+st.header("👤 Customer & Wallet")
+
+customer_col1, customer_col2 = st.columns([1.4, 1])
+
+
+# ------------------------------------------------------------
+# CUSTOMER PROFILE
+# ------------------------------------------------------------
+
+with customer_col1:
+
+    st.subheader("Create Customer Profile")
+
+    with st.form("customer_form"):
+
+        customer_name = st.text_input(
+            "Full Name",
+            placeholder="Enter customer name"
+        )
+
+        customer_phone = st.text_input(
+            "Phone Number",
+            placeholder="Enter phone number"
+        )
+
+        customer_address = st.text_input(
+            "Delivery Address",
+            placeholder="Enter delivery address"
+        )
+
+        create_customer = st.form_submit_button(
+            "Create Customer",
+            type="primary"
+        )
+
+        if create_customer:
+
+            if (
+                customer_name
+                and customer_phone
+                and customer_address
+            ):
+
+                st.session_state.customer = Customer(
+                    customer_name,
+                    customer_phone,
+                    customer_address
+                )
+
+                st.success(
+                    f"Welcome, {customer_name}! 🎉"
+                )
+
+            else:
+
+                st.warning(
+                    "Please fill in all customer details."
+                )
+
+
+# ------------------------------------------------------------
+# CUSTOMER INFORMATION
+# ------------------------------------------------------------
+
+with customer_col2:
+
+    st.subheader("Customer Overview")
+
+    if st.session_state.customer:
+
+        customer = st.session_state.customer
+
+        st.write(
+            f"**Name:** {customer._name}"
+        )
+
+        st.write(
+            f"**Phone:** {customer._phone}"
+        )
+
+        st.write(
+            f"**Address:** {customer.address}"
+        )
+
+        st.metric(
+            "💰 Wallet Balance",
+            f"₹{customer._wallet_balance:.2f}"
+        )
+
+    else:
+
+        st.info(
+            "No customer profile created yet."
+        )
+
+
+st.divider()
+
+
+# ============================================================
+# ADD WALLET BALANCE
+# ============================================================
+
+st.subheader("💰 Manage Wallet")
+
+if st.session_state.customer:
+
+    wallet_col1, wallet_col2 = st.columns([1, 2])
+
+    with wallet_col1:
+
+        wallet_amount = st.number_input(
+            "Amount to Add (₹)",
+            min_value=0.0,
+            step=100.0,
+            value=100.0
+        )
+
+    with wallet_col2:
+
+        st.write("")
+        st.write("")
+
+        if st.button(
+            "➕ Add Money",
+            type="primary"
+        ):
+
+            if wallet_amount > 0:
+
+                st.session_state.customer.add_to_wallet(
+                    wallet_amount
+                )
+
+                st.success(
+                    f"₹{wallet_amount:.2f} added to wallet!"
+                )
+
+            else:
+
+                st.warning(
+                    "Enter an amount greater than ₹0."
+                )
+
+else:
+
+    st.info(
+        "Create a customer profile first "
+        "to manage the wallet."
+    )
 # ============================================================
 # RESTAURANT INFORMATION
 # ============================================================
