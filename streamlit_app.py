@@ -9,7 +9,7 @@ from food_delivery import (
 
 
 # ============================================================
-# PAGE CONFIGURATION
+# PAGE CONFIG
 # ============================================================
 
 st.set_page_config(
@@ -38,7 +38,7 @@ st.markdown(
     }
 
     .hero {
-        padding: 32px;
+        padding: 30px;
         border-radius: 20px;
         background: linear-gradient(
             135deg,
@@ -51,11 +51,11 @@ st.markdown(
 
     .hero h1 {
         font-size: 42px;
-        margin-bottom: 8px;
+        margin-bottom: 5px;
     }
 
     .hero p {
-        font-size: 18px;
+        font-size: 17px;
         margin-bottom: 0;
     }
 
@@ -79,18 +79,21 @@ st.markdown(
         color: #ff6b35;
     }
 
+    .status-card {
+        padding: 18px;
+        border-radius: 15px;
+        background: white;
+        border: 1px solid #eeeeee;
+    }
+
     .section-title {
-        font-size: 30px;
+        font-size: 28px;
         font-weight: 700;
         margin-bottom: 5px;
     }
 
-    .info-card {
-        padding: 20px;
-        border-radius: 16px;
-        background: white;
-        border: 1px solid #eeeeee;
-        box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+    .small-text {
+        color: #666666;
     }
 
     footer {
@@ -163,24 +166,7 @@ food_icons = {
 
 
 # ============================================================
-# COMMON DATA
-# ============================================================
-
-menu_items = restaurant.get_menu()
-
-if st.session_state.customer:
-
-    customer = st.session_state.customer
-    orders = customer.order_history
-
-else:
-
-    customer = None
-    orders = []
-
-
-# ============================================================
-# SIDEBAR
+# SIDEBAR NAVIGATION
 # ============================================================
 
 with st.sidebar:
@@ -188,7 +174,7 @@ with st.sidebar:
     st.title("🍔 Smart Food Corner")
 
     st.caption(
-        "Smart Food Ordering & Restaurant Analytics"
+        "Food Ordering & Restaurant Analytics"
     )
 
     st.divider()
@@ -216,8 +202,22 @@ with st.sidebar:
     st.divider()
 
     st.caption(
-        "Portfolio Project"
+        "Portfolio Project • Smart Food Corner"
     )
+
+
+# ============================================================
+# COMMON DATA
+# ============================================================
+
+menu_items = restaurant.get_menu()
+
+if st.session_state.customer:
+    customer = st.session_state.customer
+    orders = customer.order_history
+else:
+    customer = None
+    orders = []
 
 
 # ============================================================
@@ -225,10 +225,6 @@ with st.sidebar:
 # ============================================================
 
 if page == "🏠 Dashboard":
-
-    # --------------------------------------------------------
-    # HERO
-    # --------------------------------------------------------
 
     st.markdown(
         """
@@ -243,16 +239,12 @@ if page == "🏠 Dashboard":
     )
 
     st.write(
-        "A Python OOP-based food ordering platform "
-        "that combines customer management, order tracking, "
+        "A Python OOP-based food ordering application "
+        "with customer management, order tracking, "
         "delivery operations and restaurant analytics."
     )
 
     st.divider()
-
-    # --------------------------------------------------------
-    # APPLICATION OVERVIEW
-    # --------------------------------------------------------
 
     st.subheader("📊 Application Overview")
 
@@ -260,11 +252,10 @@ if page == "🏠 Dashboard":
 
     with col1:
 
-        customer_value = (
-            customer._name
-            if customer
-            else "Not Created"
-        )
+        if customer:
+            customer_value = customer._name
+        else:
+            customer_value = "Not Created"
 
         st.metric(
             "👤 Customer",
@@ -286,11 +277,12 @@ if page == "🏠 Dashboard":
 
     with col3:
 
-        order_status = (
-            st.session_state.order._status
-            if st.session_state.order
-            else "No Order"
-        )
+        if st.session_state.order:
+            order_status = (
+                st.session_state.order._status
+            )
+        else:
+            order_status = "No Order"
 
         st.metric(
             "📦 Order",
@@ -308,7 +300,6 @@ if page == "🏠 Dashboard":
             )
 
         else:
-
             partner_status = "Not Created"
 
         st.metric(
@@ -318,112 +309,65 @@ if page == "🏠 Dashboard":
 
     st.divider()
 
-    # --------------------------------------------------------
-    # QUICK ACTIONS
-    # --------------------------------------------------------
+    st.subheader("✨ Explore Smart Food Corner")
 
-    st.subheader("⚡ Quick Actions")
+    col1, col2, col3 = st.columns(3)
 
-    action_col1, action_col2, action_col3 = st.columns(3)
+    with col1:
 
-    with action_col1:
+        st.markdown(
+            """
+            ### 👤 Customer
 
-        st.info(
-            "🍽️ **Browse Menu**\n\n"
-            "Explore available food items, "
-            "prices and food categories."
+            Create a customer profile and
+            manage wallet balance.
+            """
         )
 
-    with action_col2:
+    with col2:
 
-        st.info(
-            "🛒 **Order Food**\n\n"
-            "Select food items, preview your bill "
-            "and place an order."
+        st.markdown(
+            """
+            ### 🍽️ Food Ordering
+
+            Browse the menu, select food
+            and place an order.
+            """
         )
 
-    with action_col3:
+    with col3:
 
-        st.info(
-            "📦 **Track Order**\n\n"
-            "Monitor order status and delivery progress."
+        st.markdown(
+            """
+            ### 📊 Analytics
+
+            Understand orders, revenue,
+            popular food and preferences.
+            """
         )
 
     st.divider()
-
-    # --------------------------------------------------------
-    # RESTAURANT SNAPSHOT
-    # --------------------------------------------------------
 
     st.subheader("🍽️ Restaurant Snapshot")
 
     col1, col2, col3 = st.columns(3)
 
     with col1:
-
         st.metric(
             "Restaurant",
             restaurant.name
         )
 
     with col2:
-
         st.metric(
-            "📍 Location",
+            "Location",
             restaurant.location
         )
 
     with col3:
-
         st.metric(
-            "🍽️ Menu Items",
+            "Menu Items",
             len(menu_items)
-        )
-
-    st.divider()
-
-    # --------------------------------------------------------
-    # PROJECT HIGHLIGHTS
-    # --------------------------------------------------------
-
-    st.subheader("✨ What You Can Do")
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-
-        st.markdown(
-            """
-            ### 👤 Customer Management
-
-            • Create customer profile  
-            • Manage wallet balance  
-            • Track order history
-            """
-        )
-
-    with col2:
-
-        st.markdown(
-            """
-            ### 🛵 Delivery Operations
-
-            • Create delivery partner  
-            • Accept orders  
-            • OTP-based delivery
-            """
-        )
-
-    with col3:
-
-        st.markdown(
-            """
-            ### 📊 Restaurant Analytics
-
-            • Revenue tracking  
-            • Popular food analysis  
-            • Customer preferences
-            """
         )
 
 
@@ -448,10 +392,6 @@ elif page == "🍽️ Menu":
 
     st.divider()
 
-    # --------------------------------------------------------
-    # FOOD CARDS
-    # --------------------------------------------------------
-
     for i in range(0, len(menu_items), 3):
 
         cols = st.columns(3)
@@ -475,77 +415,53 @@ elif page == "🍽️ Menu":
                 st.markdown(
                     f"""
                     <div class="food-card">
-
                         <div class="food-title">
                             {icon} {item.name}
                         </div>
-
                         <br>
-
                         <div class="food-price">
                             ₹{item.price:.0f}
                         </div>
-
                         <br>
-
-                        Freshly prepared and
-                        available for ordering.
-
                     </div>
                     """,
                     unsafe_allow_html=True,
                 )
 
                 if item.is_veg:
-
-                    st.success(
-                        "🟢 Vegetarian"
-                    )
-
+                    st.success("🟢 Vegetarian")
                 else:
-
-                    st.error(
-                        "🔴 Non-Vegetarian"
-                    )
+                    st.error("🔴 Non-Vegetarian")
 
     st.divider()
 
-    # --------------------------------------------------------
-    # MENU SUMMARY
-    # --------------------------------------------------------
-
     st.subheader("📋 Menu Overview")
 
+    col1, col2, col3 = st.columns(3)
+
     veg_count = sum(
-        1
-        for item in menu_items
+        1 for item in menu_items
         if item.is_veg
     )
 
     nonveg_count = sum(
-        1
-        for item in menu_items
+        1 for item in menu_items
         if not item.is_veg
     )
 
-    col1, col2, col3 = st.columns(3)
-
     with col1:
-
         st.metric(
             "🍽️ Total Items",
             len(menu_items)
         )
 
     with col2:
-
         st.metric(
             "🟢 Vegetarian",
             veg_count
         )
 
     with col3:
-
         st.metric(
             "🔴 Non-Vegetarian",
             nonveg_count
@@ -564,16 +480,16 @@ elif page == "🛒 Order Food":
     )
 
     st.caption(
-        "Select your favourite food and place your order."
+        "Select your favourite items and place your order."
     )
 
     st.divider()
 
     # --------------------------------------------------------
-    # CUSTOMER PROFILE
+    # CUSTOMER
     # --------------------------------------------------------
 
-    st.subheader("👤 Customer Profile")
+    st.subheader("👤 Customer")
 
     if customer is None:
 
@@ -642,11 +558,11 @@ elif page == "🛒 Order Food":
                 f"**₹{customer._wallet_balance:.2f}**"
             )
 
+    st.divider()
+
     # --------------------------------------------------------
     # WALLET
     # --------------------------------------------------------
-
-    st.divider()
 
     st.subheader("💰 Wallet")
 
@@ -676,9 +592,7 @@ elif page == "🛒 Order Food":
 
                 if amount > 0:
 
-                    customer.add_to_wallet(
-                        amount
-                    )
+                    customer.add_to_wallet(amount)
 
                     st.success(
                         f"₹{amount:.2f} added successfully!"
@@ -686,23 +600,11 @@ elif page == "🛒 Order Food":
 
                     st.rerun()
 
-                else:
-
-                    st.warning(
-                        "Enter an amount greater than ₹0."
-                    )
-
-    else:
-
-        st.info(
-            "Create a customer profile first."
-        )
+    st.divider()
 
     # --------------------------------------------------------
     # FOOD SELECTION
     # --------------------------------------------------------
-
-    st.divider()
 
     st.subheader("🍽️ Select Food")
 
@@ -748,8 +650,6 @@ elif page == "🛒 Order Food":
 
             with bill_col1:
 
-                st.write("### Selected Items")
-
                 for item in selected_objects:
 
                     icon = food_icons.get(
@@ -758,7 +658,7 @@ elif page == "🛒 Order Food":
                     )
 
                     st.write(
-                        f"{icon} **{item.name}** — "
+                        f"{icon} {item.name} — "
                         f"₹{item.price:.2f}"
                     )
 
@@ -782,10 +682,6 @@ elif page == "🛒 Order Food":
 
             st.divider()
 
-            # ------------------------------------------------
-            # PLACE ORDER
-            # ------------------------------------------------
-
             if st.button(
                 "🛒 Place Order",
                 type="primary",
@@ -808,8 +704,7 @@ elif page == "🛒 Order Food":
                     )
 
                     st.info(
-                        f"🔐 Demo OTP: "
-                        f"**{order._otp}**"
+                        f"🔐 Demo OTP: **{order._otp}**"
                     )
 
                     st.rerun()
@@ -823,7 +718,7 @@ elif page == "🛒 Order Food":
         else:
 
             st.info(
-                "🍽️ Select food items to see your bill."
+                "Select food items to see your bill."
             )
 
 
@@ -847,10 +742,6 @@ elif page == "📦 My Order":
     if st.session_state.order:
 
         order = st.session_state.order
-
-        # ----------------------------------------------------
-        # ORDER SUMMARY
-        # ----------------------------------------------------
 
         col1, col2, col3 = st.columns(3)
 
@@ -877,36 +768,6 @@ elif page == "📦 My Order":
 
         st.divider()
 
-        # ----------------------------------------------------
-        # ORDER PROGRESS
-        # ----------------------------------------------------
-
-        st.subheader("🚚 Order Progress")
-
-        if order._status == "Placed":
-
-            st.warning(
-                "🟡 Order Placed — Waiting for delivery partner."
-            )
-
-        elif order._status == "Accepted":
-
-            st.info(
-                "🔵 Order Accepted — Out for delivery."
-            )
-
-        elif order._status == "Delivered":
-
-            st.success(
-                "🟢 Order Delivered Successfully!"
-            )
-
-        # ----------------------------------------------------
-        # DELIVERY INFORMATION
-        # ----------------------------------------------------
-
-        st.divider()
-
         st.subheader("⏱️ Delivery Information")
 
         col1, col2 = st.columns(2)
@@ -923,7 +784,7 @@ elif page == "📦 My Order":
             if order._status == "Delivered":
 
                 st.success(
-                    "Delivery completed"
+                    "🎉 Order delivered successfully!"
                 )
 
             elif order._status == "Accepted":
@@ -937,10 +798,6 @@ elif page == "📦 My Order":
                 st.warning(
                     "⏳ Waiting for delivery partner."
                 )
-
-        # ----------------------------------------------------
-        # ORDERED ITEMS
-        # ----------------------------------------------------
 
         st.divider()
 
@@ -983,7 +840,7 @@ elif page == "🛵 Delivery":
     st.divider()
 
     # --------------------------------------------------------
-    # CREATE DELIVERY PARTNER
+    # CREATE PARTNER
     # --------------------------------------------------------
 
     st.subheader("👤 Delivery Partner")
@@ -1046,17 +903,17 @@ elif page == "🛵 Delivery":
                     "Enter partner name and phone."
                 )
 
+    st.divider()
+
     # --------------------------------------------------------
     # PARTNER STATUS
     # --------------------------------------------------------
 
-    st.divider()
-
-    st.subheader("📊 Partner Status")
-
     if st.session_state.delivery_partner:
 
         partner = st.session_state.delivery_partner
+
+        st.subheader("📊 Partner Status")
 
         col1, col2, col3 = st.columns(3)
 
@@ -1093,11 +950,11 @@ elif page == "🛵 Delivery":
             "No delivery partner created yet."
         )
 
+    st.divider()
+
     # --------------------------------------------------------
     # ACCEPT ORDER
     # --------------------------------------------------------
-
-    st.divider()
 
     st.subheader("📦 Accept Order")
 
@@ -1132,51 +989,33 @@ elif page == "🛵 Delivery":
 
         with col2:
 
-            if order._status == "Placed":
+            if partner.is_available:
 
-                if partner.is_available:
+                if st.button(
+                    "✅ Accept Order",
+                    type="primary",
+                    use_container_width=True
+                ):
 
-                    if st.button(
-                        "✅ Accept Order",
-                        type="primary",
-                        use_container_width=True
-                    ):
+                    partner.accept_order(order)
 
-                        partner.accept_order(
-                            order
-                        )
-
-                        st.success(
-                            f"Order "
-                            f"{order._order_id} "
-                            "accepted!"
-                        )
-
-                        st.rerun()
-
-                else:
-
-                    st.warning(
-                        "Delivery partner is currently busy."
+                    st.success(
+                        f"Order {order._order_id} accepted!"
                     )
 
-            elif order._status == "Accepted":
-
-                st.info(
-                    "Order is already accepted."
-                )
+                    st.rerun()
 
             else:
 
-                st.success(
-                    "Order has already been delivered."
+                st.warning(
+                    "Delivery partner is currently busy."
                 )
+
+    st.divider()
 
     # --------------------------------------------------------
     # COMPLETE DELIVERY
     # --------------------------------------------------------
-
-    st.divider()
 
     st.subheader("🔐 Complete Delivery")
 
@@ -1207,7 +1046,7 @@ elif page == "🛵 Delivery":
 
             st.info(
                 "📍 Order is out for delivery. "
-                "Enter the customer's OTP to complete delivery."
+                "Enter the customer's OTP."
             )
 
             otp = st.number_input(
@@ -1215,7 +1054,6 @@ elif page == "🛵 Delivery":
                 min_value=1000,
                 max_value=9999,
                 step=1,
-                value=1000,
                 key="delivery_otp"
             )
 
@@ -1233,8 +1071,7 @@ elif page == "🛵 Delivery":
                 if order._status == "Delivered":
 
                     st.success(
-                        f"🎉 Order "
-                        f"{order._order_id} "
+                        f"🎉 Order {order._order_id} "
                         "delivered successfully!"
                     )
 
@@ -1243,8 +1080,7 @@ elif page == "🛵 Delivery":
                 else:
 
                     st.error(
-                        "❌ Incorrect OTP. "
-                        "Please enter the correct OTP."
+                        "❌ Incorrect OTP."
                     )
 
         elif order._status == "Delivered":
@@ -1280,7 +1116,7 @@ elif page == "📊 Analytics":
         orders = []
 
     # --------------------------------------------------------
-    # KPI CALCULATIONS
+    # KPIs
     # --------------------------------------------------------
 
     total_orders = len(orders)
@@ -1292,7 +1128,7 @@ elif page == "📊 Analytics":
 
     average_order_value = (
         total_revenue / total_orders
-        if total_orders > 0
+        if total_orders
         else 0
     )
 
@@ -1313,10 +1149,6 @@ elif page == "📊 Analytics":
         for order in orders
         if order._status == "Accepted"
     )
-
-    # --------------------------------------------------------
-    # KPI CARDS
-    # --------------------------------------------------------
 
     col1, col2, col3, col4 = st.columns(4)
 
@@ -1409,10 +1241,6 @@ elif page == "📊 Analytics":
             reverse=True
         )
 
-        # ----------------------------------------------------
-        # POPULAR FOOD
-        # ----------------------------------------------------
-
         st.divider()
 
         st.subheader("🍽️ Popular Food Items")
@@ -1427,11 +1255,11 @@ elif page == "📊 Analytics":
                 f"{count} order(s)"
             )
 
+        st.divider()
+
         # ----------------------------------------------------
         # FOOD PREFERENCE
         # ----------------------------------------------------
-
-        st.divider()
 
         st.subheader("🥗 Food Preference")
 
@@ -1443,11 +1271,8 @@ elif page == "📊 Analytics":
             for item in order._items:
 
                 if item.is_veg:
-
                     veg_orders += 1
-
                 else:
-
                     nonveg_orders += 1
 
         col1, col2 = st.columns(2)
@@ -1466,11 +1291,11 @@ elif page == "📊 Analytics":
                 nonveg_orders
             )
 
+        st.divider()
+
         # ----------------------------------------------------
         # CHARTS
         # ----------------------------------------------------
-
-        st.divider()
 
         st.subheader("📈 Performance Dashboard")
 
@@ -1486,9 +1311,7 @@ elif page == "📊 Analytics":
                 "Delivered": delivered_orders,
             }
 
-            st.bar_chart(
-                status_data
-            )
+            st.bar_chart(status_data)
 
         with chart_col2:
 
@@ -1496,18 +1319,17 @@ elif page == "📊 Analytics":
 
             popular_data = {
                 item_name: count
-                for item_name, count in sorted_items
+                for item_name, count
+                in sorted_items
             }
 
-            st.bar_chart(
-                popular_data
-            )
+            st.bar_chart(popular_data)
+
+        st.divider()
 
         # ----------------------------------------------------
         # BUSINESS INSIGHTS
         # ----------------------------------------------------
-
-        st.divider()
 
         st.subheader("💡 Business Insights")
 
@@ -1515,8 +1337,7 @@ elif page == "📊 Analytics":
         top_item_count = sorted_items[0][1]
 
         st.success(
-            f"🏆 Most ordered item: "
-            f"**{top_item}** "
+            f"🏆 Most ordered item: **{top_item}** "
             f"with {top_item_count} order(s)."
         )
 
