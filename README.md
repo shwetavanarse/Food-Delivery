@@ -1,260 +1,459 @@
-# 🍔 Food Delivery OOP Project
+# 🍔 Food Delivery System
 
-🚀 **Live Demo:** https://food-delivery-egdhbbo89ebaejcxiebmpn.streamlit.app/
+### Object-Oriented Python Application with an Interactive Streamlit Interface
 
-A simple Food Delivery System built using Object-Oriented Programming in Python and Streamlit.# Food-Delivery
-Food Delivery System using Python and Streamlit
-<div align="center">
+A practical **Food Delivery Management System** developed using **Python Object-Oriented Programming (OOP)** and **Streamlit**.
 
-# 🍽️ Food Delivery System
-
-### An object-oriented food delivery engine in pure Python
-
-![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Paradigm](https://img.shields.io/badge/Paradigm-OOP-ff6b35?style=for-the-badge)
-![Dependencies](https://img.shields.io/badge/Dependencies-None-2ea44f?style=for-the-badge)
-![Interface](https://img.shields.io/badge/Interface-CLI-black?style=for-the-badge)
-
-*Register. Order. Pay. Verify. Deliver.*
-
-</div>
+The project demonstrates how core OOP concepts can be applied to a real-world food delivery workflow — from creating a customer and managing a wallet to placing an order, assigning a delivery partner, verifying an OTP, and completing delivery.
 
 ---
 
-## ✨ Overview
+## 🚀 Live Demo
 
-**Food Delivery System** models the core workflow of apps like Swiggy or Zomato using clean, well-structured object-oriented Python. It covers the full journey of an order: from registering users and building a restaurant menu, to calculating the bill, accepting the order, verifying an OTP at the doorstep, and notifying everyone involved.
+### 🍔 [Launch the Food Delivery Application](https://food-delivery-egdhbbo89ebaejcxiebmpn.streamlit.app/)
 
-It uses only the Python standard library, so there is nothing to install.
+> **Try the application directly in your browser.**
 
-## 🎯 Highlights
+---
 
-| | Feature | Details |
-|---|---|---|
-| 👤 | **User registration** | Customers and delivery partners share a common abstract `User` base |
-| 💰 | **Wallet top-up** | Zero or positive amounts are credited; negative amounts are rejected |
-| 🍛 | **Menu management** | Restaurants hold `MenuItem` objects with price and veg/non-veg flag |
-| 🧾 | **Automatic billing** | Subtotal + 5% GST + ₹20 packaging fee |
-| 🔐 | **OTP-verified delivery** | A wrong OTP leaves the order `Accepted` and the partner busy |
-| 🔔 | **Role-specific notifications** | Customers and partners see differently worded messages (polymorphism) |
-| 🚦 | **Order lifecycle** | `Placed` → `Accepted` → `Delivered` |
+## 📌 Project Overview
 
-## 🧭 System Flow
+The Food Delivery System models the core components of a simplified online food-ordering platform.
 
-```mermaid
-flowchart LR
-    A[Register Customer] --> B[Create Restaurant]
-    B --> C[Add Menu Items]
-    C --> D[Top Up Wallet]
-    D --> E[Place Order]
-    E --> F[Calculate Bill]
-    F --> G[Accept Order]
-    G --> H[Verify OTP]
-    H --> I[Deliver Order]
-    I --> J[Notify Users]
-```
+The application contains separate classes for:
 
-## 🏗️ Architecture
+- 👤 Users
+- 🧑‍💼 Customers
+- 🛵 Delivery Partners
+- 🏪 Restaurants
+- 🍽️ Menu Items
+- 📦 Orders
 
-```mermaid
-classDiagram
-    class User {
-        <<abstract>>
-        -_name
-        -_phone
-        -_wallet_balance
-        +add_to_wallet(amount)
-        +notify(message)*
-        +display_profile()*
-    }
-    class Customer {
-        -_address
-        +order_history
-        +place_order(restaurant, items)
-    }
-    class DeliveryPartner {
-        +vehicle
-        +is_available
-        +rating
-        +accept_order(order)
-        +deliver(order, otp)
-    }
-    class MenuItem {
-        +name
-        +price
-        +is_veg
-    }
-    class Restaurant {
-        +name
-        +location
-        -_menu
-        +add_item(menu_item)
-        +get_menu()
-        +is_open()
-    }
-    class Order {
-        -_order_id
-        -_items
-        -_status
-        -_otp
-        +calculate_bill()
-        +estimated_time()
-        +update_status(new_status)
-        +verify_otp(otp)
-    }
+The underlying business logic is implemented using Python classes, while **Streamlit provides an interactive web interface** for performing the complete order and delivery workflow.
 
-    User <|-- Customer
-    User <|-- DeliveryPartner
-    Restaurant o-- MenuItem
-    Order o-- MenuItem
-    Customer ..> Order : creates
-    DeliveryPartner ..> Order : delivers
-```
+---
 
-### Order lifecycle
+## ✨ Key Features
 
-```mermaid
-stateDiagram-v2
-    [*] --> Placed
-    Placed --> Accepted : partner accepts
-    Accepted --> Accepted : wrong OTP
-    Accepted --> Delivered : correct OTP
-    Delivered --> [*]
-```
-
-### OOP concepts demonstrated
-
-- **Abstraction**: `User` is an abstract base class (`ABC`) and cannot be instantiated directly.
-- **Inheritance**: `Customer` and `DeliveryPartner` extend `User` and reuse its wallet logic.
-- **Polymorphism**: `notify()` and `display_profile()` behave differently for each user type.
-- **Encapsulation**: internal state such as `_wallet_balance`, `_menu`, `_status`, and `_otp` is kept non-public by convention.
-- **Composition**: a `Restaurant` holds `MenuItem` objects, and an `Order` holds the items selected.
-
-## 🧾 Billing Rule
-
-```
-Total = Subtotal + (Subtotal × 5% GST) + ₹20 packaging fee
-```
-
-**Example:** Biryani (₹250) + Kebab (₹180)
-
-| Component | Amount |
+| Feature | Description |
 |---|---|
-| Subtotal | ₹430.00 |
-| GST (5%) | ₹21.50 |
-| Packaging fee | ₹20.00 |
-| **Total** | **₹471.50** |
+| 👤 **Customer Management** | Create customers with name, phone and address |
+| 💰 **Wallet Management** | Add funds and display wallet balance |
+| 🏪 **Restaurant Menu** | View restaurant information and available food items |
+| 🍽️ **Food Selection** | Select multiple items from the menu |
+| 🛒 **Order Placement** | Create an order and generate an Order ID |
+| 🧾 **Automatic Billing** | Calculate subtotal, GST and packaging charges |
+| 🛵 **Delivery Partner** | Create and manage delivery partner information |
+| ✅ **Order Acceptance** | Delivery partner accepts the order |
+| 🔐 **OTP Verification** | Verify OTP before completing delivery |
+| 📦 **Order Tracking** | Track order status throughout the workflow |
+| 🌐 **Streamlit UI** | Interactive browser-based application |
 
-Estimated delivery time is a fixed **30 minutes**.
+---
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Python 3.8 or newer
-- No third-party packages required
-
-### Run the demo
-
-```bash
-# 1. Get the project files into one folder
-#    food_delivery.py   (all class definitions)
-#    demo.py            (end-to-end demonstration)
-
-# 2. Run
-python demo.py
-```
-
-> **Note:** `demo.py` must import the classes at the top with `from food_delivery import *`.
-
-### Sample output
+## 🔄 Application Workflow
 
 ```text
-Total Bill: ₹471.5
-Estimated Time: 30 mins
-Rajesh has accepted the order.
-Incorrect OTP! Order not delivered.
-OTP verified. Order delivered by Rajesh.
-Notification for Priya: Order delivered successfully.
-Delivery Partner Rajesh Notification: Delivery complete, you are now available.
+        👤 Create Customer
+                │
+                ▼
+        💰 Add Wallet Balance
+                │
+                ▼
+        🍽️ View Restaurant Menu
+                │
+                ▼
+        🛒 Select Food Items
+                │
+                ▼
+          📦 Place Order
+                │
+                ▼
+       🛵 Create Delivery Partner
+                │
+                ▼
+          ✅ Accept Order
+                │
+                ▼
+          🔐 Enter OTP
+                │
+                ▼
+       🎉 Complete Delivery
 ```
 
-## 💻 Usage Example
+### Order Lifecycle
+
+```text
+Placed  →  Accepted  →  Delivered
+```
+
+An incorrect OTP keeps the order in the accepted state until the correct OTP is provided. This matches the project's intended order lifecycle.
+
+---
+
+# 🧠 Object-Oriented Programming
+
+The project focuses on applying important OOP principles to a practical use case.
+
+### 1. Abstraction
+
+`User` is designed as an abstract base class with abstract methods such as:
 
 ```python
-from food_delivery import Customer, DeliveryPartner, Restaurant, MenuItem
-
-# Register users
-priya = Customer("Priya", "9876543210", "Bangalore")
-rajesh = DeliveryPartner("Rajesh", "9998887776", "Bike")
-
-# Build a restaurant menu
-bawarchi = Restaurant("Bawarchi", "MG Road")
-biryani = MenuItem("Biryani", 250, is_veg=False)
-kebab = MenuItem("Kebab", 180, is_veg=False)
-bawarchi.add_item(biryani)
-bawarchi.add_item(kebab)
-
-# Wallet top-up (negative amounts are ignored)
-priya.add_to_wallet(500)
-priya.add_to_wallet(-100)
-
-# Place an order and check the bill
-order = priya.place_order(bawarchi, [biryani, kebab])
-print(order.calculate_bill())      # 471.5
-
-# Deliver with OTP verification
-rajesh.accept_order(order)
-rajesh.deliver(order, 9999)        # rejected
-rajesh.deliver(order, 1234)        # delivered
-
-# Notify both parties
-priya.notify("Order delivered successfully.")
-rajesh.notify("Delivery complete, you are now available.")
+notify()
+display_profile()
 ```
 
-## 📁 Project Structure
+This provides a common structure for different types of users.
+
+### 2. Inheritance
+
+The following classes inherit from `User`:
 
 ```text
-food-delivery-system/
-├── food_delivery.py   # User, Customer, DeliveryPartner, MenuItem, Restaurant, Order
-├── demo.py            # End-to-end demonstration of the full workflow
-└── README.md          # You are here
+User
+ ├── Customer
+ └── DeliveryPartner
 ```
 
-## 📚 API Reference
+This allows common user functionality, such as wallet management, to be reused.
 
-| Class | Key members |
-|---|---|
-| `User` *(abstract)* | `add_to_wallet(amount)`, `notify(message)`, `display_profile()` |
-| `Customer` | `address`, `order_history`, `place_order(restaurant, items)` |
-| `DeliveryPartner` | `vehicle`, `is_available`, `rating`, `accept_order(order)`, `deliver(order, otp)` |
-| `MenuItem` | `name`, `price`, `is_veg` |
-| `Restaurant` | `name`, `location`, `add_item(item)`, `get_menu()`, `is_open()` |
-| `Order` | `calculate_bill()`, `estimated_time()`, `update_status(status)`, `verify_otp(otp)` |
+### 3. Encapsulation
 
-## 🛣️ Roadmap
+Internal application state is represented using attributes such as:
 
-- [ ] Deduct the bill from the customer's wallet, with an insufficient-balance check
-- [ ] Validate that ordered items belong to the restaurant's menu and that it `is_open()`
-- [ ] Print a full bill breakdown (subtotal, GST, packaging fee)
-- [ ] Generate a unique OTP per order instead of a fixed value
-- [ ] Delivery partner ratings and assignment of available partners
-- [ ] Streamlit web interface on top of the existing classes
-- [ ] Unit tests with `unittest` or `pytest`
+```text
+_wallet_balance
+_menu
+_status
+_otp
+```
 
-## 🎓 What I Learned
+This keeps implementation details separated from the public interface.
 
-Designing a small system from scratch with abstract base classes, inheritance, and composition, and keeping each class focused on one responsibility.
+### 4. Polymorphism
 
-## 👤 Author
+`Customer` and `DeliveryPartner` provide their own implementations of common user behaviour such as `notify()` and `display_profile()`.
 
-**Shweta Vanarse**, built as *Food Delivery System*.
+### 5. Composition
+
+The system uses relationships between objects:
+
+```text
+Restaurant
+   └── MenuItem
+
+Order
+   └── MenuItem
+
+Customer
+   └── Order
+
+DeliveryPartner
+   └── Order
+```
+
+These concepts are also reflected in the architecture documented in the original project.
 
 ---
 
-<div align="center">
+# 🏗️ System Architecture
 
-⭐ If you found this project helpful, consider giving it a star!
+```text
+                    ┌─────────────────────────┐
+                    │      Streamlit UI       │
+                    │        app.py            │
+                    └────────────┬────────────┘
+                                 │
+                                 ▼
+                    ┌─────────────────────────┐
+                    │    Food Delivery OOP    │
+                    │    food_delivery.py     │
+                    └────────────┬────────────┘
+                                 │
+             ┌───────────────────┼───────────────────┐
+             │                   │                   │
+             ▼                   ▼                   ▼
+        👤 Customer         🏪 Restaurant      🛵 Delivery
+             │                   │                   │
+             │                   ▼                   │
+             │              🍽️ Menu Items           │
+             │                   │                   │
+             └───────────────────┼───────────────────┘
+                                 ▼
+                           📦 Order
+                                 │
+                                 ▼
+                           🔐 OTP Check
+                                 │
+                                 ▼
+                           🎉 Delivered
+```
 
-</div>
+---
+
+# 💰 Billing Logic
+
+The order bill is calculated using:
+
+```text
+Total Bill
+    =
+Subtotal
++ 5% GST
++ ₹20 Packaging Fee
+```
+
+For example:
+
+```text
+Subtotal       ₹430.00
+GST (5%)        ₹21.50
+Packaging       ₹20.00
+──────────────────────
+Total           ₹471.50
+```
+
+The project currently uses a fixed estimated delivery time of **30 minutes**.
+
+---
+
+# 🖥️ Streamlit Application
+
+The Streamlit interface provides an interactive way to work with the OOP classes.
+
+### Main sections
+
+```text
+1. Create Customer
+2. Add Wallet Balance
+3. Restaurant Menu
+4. Place Order
+5. Order Status
+6. Create Delivery Partner
+7. Accept Order
+8. Enter OTP & Complete Delivery
+9. Delivery Summary
+```
+
+The application uses Streamlit session state to preserve customer, restaurant, order and delivery-partner information while interacting with the interface.
+
+---
+
+# 📂 Project Structure
+
+```text
+Food-Delivery/
+│
+├── app.py
+│   └── Streamlit application
+│
+├── food_delivery.py
+│   └── Core OOP classes and business logic
+│
+├── streamlit_app.py
+│   └── Streamlit implementation/reference
+│
+├── Food_Delivery_System_Notebook.ipynb
+│   └── Project development notebook
+│
+├── .devcontainer/
+│   └── Development environment configuration
+│
+└── README.md
+    └── Project documentation
+```
+
+---
+
+# 🛠️ Tech Stack
+
+### Programming
+
+- 🐍 Python
+
+### Framework
+
+- 🎈 Streamlit
+
+### Core Concepts
+
+- Object-Oriented Programming
+- Abstraction
+- Encapsulation
+- Inheritance
+- Polymorphism
+- Composition
+- Session State
+
+### Tools
+
+- Jupyter Notebook
+- VS Code
+- Git
+- GitHub
+
+---
+
+# ⚙️ Run Locally
+
+## 1. Clone the Repository
+
+```bash
+git clone https://github.com/shwetavanarse/Food-Delivery.git
+```
+
+## 2. Open the Project
+
+```bash
+cd Food-Delivery
+```
+
+## 3. Install Streamlit
+
+```bash
+pip install streamlit
+```
+
+## 4. Run the Application
+
+```bash
+streamlit run app.py
+```
+
+The Streamlit application will open in your browser.
+
+---
+
+# 🧪 Example User Journey
+
+### 👤 Step 1 — Create Customer
+
+Enter:
+
+- Customer Name
+- Phone
+- Address
+
+Then create the customer profile.
+
+### 💰 Step 2 — Add Wallet Balance
+
+Add money to the customer's wallet and view the updated balance.
+
+### 🍽️ Step 3 — Explore Restaurant Menu
+
+View:
+
+- Food item
+- Price
+- Veg / Non-Veg classification
+
+### 🛒 Step 4 — Place Order
+
+Select one or more food items.
+
+The application calculates:
+
+```text
+Subtotal
++ GST
++ Packaging Fee
+= Total Bill
+```
+
+### 🛵 Step 5 — Create Delivery Partner
+
+Enter:
+
+- Partner Name
+- Phone
+- Vehicle
+
+### ✅ Step 6 — Accept Order
+
+The delivery partner accepts the placed order.
+
+### 🔐 Step 7 — Verify OTP
+
+Enter the delivery OTP.
+
+### 🎉 Step 8 — Complete Delivery
+
+After successful verification, the order is marked as delivered and the final order summary is displayed.
+
+---
+
+# 📚 Learning Outcomes
+
+This project provided practical experience in:
+
+- Designing real-world classes and objects
+- Applying abstraction and inheritance
+- Implementing polymorphism
+- Encapsulating application state
+- Working with object relationships
+- Building a multi-step application workflow
+- Managing state using Streamlit
+- Creating interactive Python web applications
+- Organizing a project using Git and GitHub
+- Connecting Python OOP logic with a user interface
+
+---
+
+# 🔮 Future Enhancements
+
+Potential improvements include:
+
+- 💳 Payment processing
+- 🗄️ Database integration
+- 🔐 User authentication
+- 🏪 Multiple restaurants
+- 🔎 Food and restaurant search
+- ⭐ Customer ratings and reviews
+- 📍 Real-time delivery tracking
+- 📊 Admin dashboard
+- 🧾 Invoice generation
+- 📧 Order notifications
+- 🔢 Unique OTP generation for every order
+- 🧪 Automated unit testing
+- 🛵 Intelligent delivery-partner assignment
+
+These are intentionally listed as future enhancements rather than current features. The original project also identifies improvements such as wallet deduction, restaurant-menu validation, unique OTPs, partner assignment, Streamlit integration and unit testing.
+
+---
+
+# 🎯 Project Highlights
+
+> **A practical demonstration of Python Object-Oriented Programming concepts through a real-world food delivery workflow, enhanced with an interactive Streamlit application.**
+
+### Core Workflow
+
+**Customer → Restaurant → Order → Delivery Partner → OTP Verification → Delivery**
+
+---
+
+# 👩‍💻 Author
+
+## Shweta Vanarse
+
+**BCA (Science) Graduate | Data Analytics | Python | SQL | Power BI**
+
+📍 Chhatrapati Sambhajinagar, Maharashtra, India
+
+### Connect with me
+
+- 💻 **GitHub:** [shwetavanarse](https://github.com/shwetavanarse)
+- 🔗 **LinkedIn:** [Shweta Vanarse](https://www.linkedin.com/in/shweta-vanarse-aa82313b1/)
+
+---
+
+## ⭐ Support
+
+If you found this project interesting, consider giving the repository a ⭐ on GitHub.
+
+---
+
+### Built with
+
+**🐍 Python · 🎈 Streamlit · 🧠 OOP · 📓 Jupyter · 🐙 GitHub**
