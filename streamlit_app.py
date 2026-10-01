@@ -37,38 +37,130 @@ if "order" not in st.session_state:
 # RESTAURANT
 # ============================================================
 
-if "restaurant" not in st.session_state:
+# ============================================================
+# RESTAURANT MENU
+# ============================================================
 
-    restaurant = Restaurant(
-        "Food Corner",
-        "Sambhajinagar"
+st.header("🍽️ Our Menu")
+
+st.write(
+    f"**{restaurant.name}** • 📍 {restaurant.location}"
+)
+
+st.caption(
+    "Choose from our freshly available menu items."
+)
+
+st.divider()
+
+
+# ------------------------------------------------------------
+# MENU ITEMS
+# ------------------------------------------------------------
+
+menu_items = restaurant.get_menu()
+
+# Display 3 food cards per row
+for i in range(0, len(menu_items), 3):
+
+    cols = st.columns(3)
+
+    for j, col in enumerate(cols):
+
+        index = i + j
+
+        if index >= len(menu_items):
+            break
+
+        item = menu_items[index]
+
+        with col:
+
+            # Food emoji based on item name
+            food_icons = {
+                "Veg Burger": "🍔",
+                "Pizza": "🍕",
+                "Paneer Wrap": "🌯",
+                "Chicken Biryani": "🍗",
+                "French Fries": "🍟"
+            }
+
+            icon = food_icons.get(
+                item.name,
+                "🍽️"
+            )
+
+            st.subheader(
+                f"{icon} {item.name}"
+            )
+
+            st.write(
+                f"### ₹{item.price:.0f}"
+            )
+
+            if item.is_veg:
+
+                st.success(
+                    "🟢 Vegetarian"
+                )
+
+            else:
+
+                st.error(
+                    "🔴 Non-Vegetarian"
+                )
+
+            st.write(
+                "Freshly prepared and "
+                "available for ordering."
+            )
+
+
+st.divider()
+
+
+# ============================================================
+# MENU SUMMARY
+# ============================================================
+
+st.subheader("📋 Menu Overview")
+
+menu_col1, menu_col2, menu_col3 = st.columns(3)
+
+with menu_col1:
+
+    st.metric(
+        "🍽️ Total Items",
+        len(menu_items)
     )
 
-    restaurant.add_item(
-        MenuItem("Veg Burger", 120, True)
+
+with menu_col2:
+
+    veg_count = sum(
+        1
+        for item in menu_items
+        if item.is_veg
     )
 
-    restaurant.add_item(
-        MenuItem("Pizza", 250, True)
+    st.metric(
+        "🟢 Vegetarian",
+        veg_count
     )
 
-    restaurant.add_item(
-        MenuItem("Paneer Wrap", 150, True)
+
+with menu_col3:
+
+    nonveg_count = sum(
+        1
+        for item in menu_items
+        if not item.is_veg
     )
 
-    restaurant.add_item(
-        MenuItem("Chicken Biryani", 220, False)
+    st.metric(
+        "🔴 Non-Vegetarian",
+        nonveg_count
     )
-
-    restaurant.add_item(
-        MenuItem("French Fries", 100, True)
-    )
-
-    st.session_state.restaurant = restaurant
-
-
-restaurant = st.session_state.restaurant
-
 
 # ============================================================
 # SIDEBAR
