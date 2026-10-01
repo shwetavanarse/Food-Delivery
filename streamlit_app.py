@@ -1129,7 +1129,301 @@ else:
             "has already been delivered."
         )
     
+# ============================================================
+# RESTAURANT ANALYTICS
+# ============================================================
 
+st.divider()
+
+st.header("📊 Restaurant Analytics")
+
+st.caption(
+    "Understand customer orders and restaurant performance."
+)
+
+
+# ------------------------------------------------------------
+# GET ORDER DATA
+# ------------------------------------------------------------
+
+if st.session_state.customer:
+
+    customer = st.session_state.customer
+
+    orders = customer.order_history
+
+else:
+
+    orders = []
+
+
+# ------------------------------------------------------------
+# BASIC ANALYTICS
+# ------------------------------------------------------------
+
+total_orders = len(orders)
+
+total_revenue = sum(
+    order.calculate_bill()
+    for order in orders
+)
+
+average_order_value = (
+    total_revenue / total_orders
+    if total_orders > 0
+    else 0
+)
+
+
+delivered_orders = sum(
+    1
+    for order in orders
+    if order._status == "Delivered"
+)
+
+
+placed_orders = sum(
+    1
+    for order in orders
+    if order._status == "Placed"
+)
+
+
+accepted_orders = sum(
+    1
+    for order in orders
+    if order._status == "Accepted"
+)
+
+
+# ------------------------------------------------------------
+# KPI CARDS
+# ------------------------------------------------------------
+
+analytics_col1, analytics_col2, analytics_col3, analytics_col4 = st.columns(4)
+
+
+with analytics_col1:
+
+    st.metric(
+        "📦 Total Orders",
+        total_orders
+    )
+
+
+with analytics_col2:
+
+    st.metric(
+        "💰 Total Revenue",
+        f"₹{total_revenue:.2f}"
+    )
+
+
+with analytics_col3:
+
+    st.metric(
+        "📈 Average Order Value",
+        f"₹{average_order_value:.2f}"
+    )
+
+
+with analytics_col4:
+
+    st.metric(
+        "🎉 Delivered Orders",
+        delivered_orders
+    )
+
+
+# ------------------------------------------------------------
+# ORDER STATUS ANALYSIS
+# ------------------------------------------------------------
+
+st.divider()
+
+st.subheader("📦 Order Status Overview")
+
+status_col1, status_col2, status_col3 = st.columns(3)
+
+
+with status_col1:
+
+    st.metric(
+        "🟡 Placed",
+        placed_orders
+    )
+
+
+with status_col2:
+
+    st.metric(
+        "🔵 Accepted",
+        accepted_orders
+    )
+
+
+with status_col3:
+
+    st.metric(
+        "🟢 Delivered",
+        delivered_orders
+    )
+
+
+# ------------------------------------------------------------
+# POPULAR FOOD ITEMS
+# ------------------------------------------------------------
+
+st.divider()
+
+st.subheader("🍽️ Popular Food Items")
+
+if orders:
+
+    item_counts = {}
+
+    for order in orders:
+
+        for item in order._items:
+
+            if item.name not in item_counts:
+
+                item_counts[item.name] = 0
+
+            item_counts[item.name] += 1
+
+
+    sorted_items = sorted(
+        item_counts.items(),
+        key=lambda x: x[1],
+        reverse=True
+    )
+
+
+    for rank, (item_name, count) in enumerate(
+        sorted_items,
+        start=1
+    ):
+
+        st.write(
+            f"**#{rank} {item_name}** — "
+            f"{count} order(s)"
+        )
+
+else:
+
+    st.info(
+        "Place an order to generate food-item analytics."
+    )
+
+
+# ------------------------------------------------------------
+# VEGETARIAN VS NON-VEGETARIAN
+# ------------------------------------------------------------
+
+st.divider()
+
+st.subheader("🥗 Food Preference Analysis")
+
+veg_orders = 0
+nonveg_orders = 0
+
+
+for order in orders:
+
+    for item in order._items:
+
+        if item.is_veg:
+
+            veg_orders += 1
+
+        else:
+
+            nonveg_orders += 1
+
+
+preference_col1, preference_col2 = st.columns(2)
+
+
+with preference_col1:
+
+    st.metric(
+        "🟢 Vegetarian Items",
+        veg_orders
+    )
+
+
+with preference_col2:
+
+    st.metric(
+        "🔴 Non-Vegetarian Items",
+        nonveg_orders
+    )
+
+
+# ------------------------------------------------------------
+# BUSINESS INSIGHTS
+# ------------------------------------------------------------
+
+st.divider()
+
+st.subheader("💡 Business Insights")
+
+
+if total_orders == 0:
+
+    st.info(
+        "Place your first order to generate "
+        "restaurant business insights."
+    )
+
+else:
+
+    if sorted_items:
+
+        top_item = sorted_items[0][0]
+
+        top_item_count = sorted_items[0][1]
+
+        st.success(
+            f"🏆 **Top Food Item:** {top_item} "
+            f"with {top_item_count} order(s)."
+        )
+
+
+    st.info(
+        f"💰 The restaurant has generated "
+        f"**₹{total_revenue:.2f}** from "
+        f"**{total_orders} order(s)**."
+    )
+
+
+    st.info(
+        f"📈 The average order value is "
+        f"**₹{average_order_value:.2f}**."
+    )
+
+
+    if veg_orders > nonveg_orders:
+
+        st.success(
+            "🥗 Vegetarian items are currently "
+            "more popular among customers."
+        )
+
+    elif nonveg_orders > veg_orders:
+
+        st.warning(
+            "🍗 Non-vegetarian items are currently "
+            "more popular among customers."
+        )
+
+    else:
+
+        st.info(
+            "⚖️ Vegetarian and non-vegetarian "
+            "items have equal order counts."
+        )
 
 # ============================================================
 # QUICK START
