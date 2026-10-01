@@ -257,9 +257,6 @@ Food-Delivery/
 ├── Food_Delivery_System_Notebook.ipynb
 │   └── Project development notebook
 │
-├── .devcontainer/
-│   └── Development environment configuration
-│
 └── README.md
     └── Project documentation
 ```
