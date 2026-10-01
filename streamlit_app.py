@@ -964,4 +964,4 @@ elif page == "🛵 Delivery":
             "Place an order before assigning a delivery partner."
         )
 
-    elif st.session_state.deliver :
+    elif st.session_state.deliver
