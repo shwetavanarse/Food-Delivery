@@ -44,7 +44,7 @@ if "order" not in st.session_state:
 st.header("🍽️ Our Menu")
 
 st.write(
-    f"**{restaurant.name}** • 📍 {restaurant.location}"
+    f"**{Restaurant.name}** • 📍 {Restaurant.location}"
 )
 
 st.caption(
@@ -58,7 +58,7 @@ st.divider()
 # MENU ITEMS
 # ------------------------------------------------------------
 
-menu_items = restaurant.get_menu()
+menu_items = Restaurant.get_menu()
 
 # Display 3 food cards per row
 for i in range(0, len(menu_items), 3):
