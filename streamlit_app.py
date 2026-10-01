@@ -846,6 +846,288 @@ else:
     )
 
 
+# ============================================================
+# DELIVERY OPERATIONS
+# ============================================================
+
+st.divider()
+
+st.header("🛵 Delivery Operations")
+
+st.caption(
+    "Manage delivery partners, accept orders and complete "
+    "deliveries using OTP verification."
+)
+
+
+# ============================================================
+# CREATE DELIVERY PARTNER
+# ============================================================
+
+st.subheader("👤 Create Delivery Partner")
+
+partner_col1, partner_col2, partner_col3 = st.columns(3)
+
+with partner_col1:
+
+    partner_name = st.text_input(
+        "Partner Name",
+        placeholder="Enter delivery partner name",
+        key="partner_name"
+    )
+
+with partner_col2:
+
+    partner_phone = st.text_input(
+        "Partner Phone",
+        placeholder="Enter phone number",
+        key="partner_phone"
+    )
+
+with partner_col3:
+
+    vehicle = st.selectbox(
+        "Vehicle",
+        [
+            "Bike",
+            "Scooter",
+            "Car"
+        ],
+        key="partner_vehicle"
+    )
+
+
+if st.button(
+    "🛵 Create Delivery Partner",
+    type="primary",
+    use_container_width=True
+):
+
+    if partner_name and partner_phone:
+
+        st.session_state.delivery_partner = DeliveryPartner(
+            partner_name,
+            partner_phone,
+            vehicle
+        )
+
+        st.success(
+            f"🎉 Delivery partner "
+            f"**{partner_name}** created successfully!"
+        )
+
+        st.rerun()
+
+    else:
+
+        st.warning(
+            "Please enter the partner name and phone number."
+        )
+
+
+# ============================================================
+# DELIVERY PARTNER STATUS
+# ============================================================
+
+st.divider()
+
+st.subheader("📊 Partner Status")
+
+if st.session_state.delivery_partner:
+
+    partner = st.session_state.delivery_partner
+
+    status_col1, status_col2, status_col3 = st.columns(3)
+
+    with status_col1:
+
+        st.metric(
+            "👤 Partner",
+            partner._name
+        )
+
+    with status_col2:
+
+        if partner.is_available:
+
+            st.metric(
+                "🟢 Availability",
+                "Available"
+            )
+
+        else:
+
+            st.metric(
+                "🔴 Availability",
+                "Busy"
+            )
+
+    with status_col3:
+
+        st.metric(
+            "🛵 Vehicle",
+            partner.vehicle
+        )
+
+else:
+
+    st.info(
+        "No delivery partner has been created yet."
+    )
+
+
+# ============================================================
+# ACCEPT ORDER
+# ============================================================
+
+st.divider()
+
+st.subheader("📦 Accept Order")
+
+if st.session_state.order is None:
+
+    st.info(
+        "Place an order first before assigning a delivery partner."
+    )
+
+elif st.session_state.delivery_partner is None:
+
+    st.info(
+        "Create a delivery partner first."
+    )
+
+else:
+
+    order = st.session_state.order
+    partner = st.session_state.delivery_partner
+
+    accept_col1, accept_col2 = st.columns(2)
+
+    with accept_col1:
+
+        st.write(
+            f"**Order:** {order._order_id}"
+        )
+
+        st.write(
+            f"**Current Status:** {order._status}"
+        )
+
+    with accept_col2:
+
+        if partner.is_available:
+
+            if st.button(
+                "✅ Accept Order",
+                type="primary",
+                use_container_width=True
+            ):
+
+                partner.accept_order(order)
+
+                st.success(
+                    f"Order **{order._order_id}** "
+                    f"accepted by {partner._name}."
+                )
+
+                st.rerun()
+
+        else:
+
+            st.warning(
+                "This delivery partner is currently busy."
+            )
+
+
+# ============================================================
+# COMPLETE DELIVERY
+# ============================================================
+
+st.divider()
+
+st.subheader("🔐 Complete Delivery")
+
+if st.session_state.order is None:
+
+    st.info(
+        "No order is available for delivery."
+    )
+
+elif st.session_state.delivery_partner is None:
+
+    st.info(
+        "Create a delivery partner first."
+    )
+
+else:
+
+    order = st.session_state.order
+    partner = st.session_state.delivery_partner
+
+    if order._status == "Placed":
+
+        st.warning(
+            "⚠️ The order must be accepted by a delivery "
+            "partner before it can be delivered."
+        )
+
+    elif order._status == "Accepted":
+
+        st.info(
+            "📍 Order is out for delivery. "
+            "Enter the customer's OTP to complete delivery."
+        )
+
+        otp_col1, otp_col2 = st.columns([1, 2])
+
+        with otp_col1:
+
+            delivery_otp = st.number_input(
+                "Enter 4-digit OTP",
+                min_value=1000,
+                max_value=9999,
+                step=1,
+                key="delivery_otp"
+            )
+
+        with otp_col2:
+
+            st.write("")
+            st.write("")
+
+            if st.button(
+                "🎉 Complete Delivery",
+                type="primary",
+                use_container_width=True
+            ):
+
+                partner.deliver(
+                    order,
+                    int(delivery_otp)
+                )
+
+                if order._status == "Delivered":
+
+                    st.success(
+                        f"🎉 Order **{order._order_id}** "
+                        "delivered successfully!"
+                    )
+
+                    st.rerun()
+
+                else:
+
+                    st.error(
+                        "❌ Incorrect OTP. "
+                        "Delivery could not be completed."
+                    )
+
+    elif order._status == "Delivered":
+
+        st.success(
+            f"🎉 Order **{order._order_id}** "
+            "has already been delivered."
+        )
     
 
 
