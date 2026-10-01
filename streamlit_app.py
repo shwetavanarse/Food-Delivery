@@ -1,6 +1,11 @@
 import streamlit as st
 
-from food_delivery import Customer, DeliveryPartner, MenuItem, Restaurant
+from food_delivery import (
+    Customer,
+    DeliveryPartner,
+    MenuItem,
+    Restaurant,
+)
 
 
 # ============================================================
@@ -8,87 +13,9 @@ from food_delivery import Customer, DeliveryPartner, MenuItem, Restaurant
 # ============================================================
 
 st.set_page_config(
-    page_title="Food Delivery OOP",
+    page_title="Smart Food Corner",
     page_icon="🍔",
     layout="wide",
-)
-
-
-# ============================================================
-# SIMPLE CSS
-# ============================================================
-
-st.markdown(
-    """
-    <style>
-        /* Main background */
-        .stApp {
-            background-color: #fffaf7;
-        }
-
-        /* Main content width */
-        .block-container {
-            max-width: 1200px;
-            padding-top: 2rem;
-            padding-bottom: 3rem;
-        }
-
-        /* Headings */
-        h1 {
-            color: #e85d2a !important;
-            font-weight: 800 !important;
-        }
-
-        h2 {
-            color: #252525 !important;
-            font-weight: 750 !important;
-        }
-
-        h3 {
-            color: #333333 !important;
-        }
-
-        /* Buttons */
-        .stButton > button {
-            border-radius: 10px;
-            font-weight: 600;
-            min-height: 42px;
-        }
-
-        /* Input boxes */
-        input {
-            border-radius: 8px !important;
-        }
-
-        /* Select boxes */
-        div[data-baseweb="select"] > div {
-            border-radius: 8px !important;
-        }
-
-        /* Metrics */
-        div[data-testid="stMetric"] {
-            background-color: white;
-            border: 1px solid #f0ddd5;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
-        }
-
-        /* Tables */
-        div[data-testid="stTable"] {
-            background-color: white;
-            border-radius: 12px;
-            border: 1px solid #f0ddd5;
-            overflow: hidden;
-        }
-
-        /* Alerts */
-        div[data-testid="stAlert"] {
-            border-radius: 10px;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True,
 )
 
 
@@ -102,11 +29,19 @@ if "customer" not in st.session_state:
 if "delivery_partner" not in st.session_state:
     st.session_state.delivery_partner = None
 
+if "order" not in st.session_state:
+    st.session_state.order = None
+
+
+# ============================================================
+# RESTAURANT
+# ============================================================
+
 if "restaurant" not in st.session_state:
 
     restaurant = Restaurant(
         "Food Corner",
-        "Aurangabad"
+        "Sambhajinagar"
     )
 
     restaurant.add_item(
@@ -132,89 +67,207 @@ if "restaurant" not in st.session_state:
     st.session_state.restaurant = restaurant
 
 
-if "order" not in st.session_state:
-    st.session_state.order = None
-
-
 restaurant = st.session_state.restaurant
 
 
 # ============================================================
-# HEADER
+# SIDEBAR
 # ============================================================
 
-st.title("🍔 Food Delivery System")
+with st.sidebar:
 
-st.caption(
-    "Simple and interactive Streamlit interface "
-    "for the OOP Food Delivery project"
+    st.title("🍔 Smart Food Corner")
+
+    st.caption(
+        "Food Ordering & Restaurant Analytics"
+    )
+
+    st.divider()
+
+    st.subheader("Navigation")
+
+    st.write("🏠 Dashboard")
+    st.write("👤 Customer")
+    st.write("🍽️ Menu")
+    st.write("🛒 Orders")
+    st.write("🛵 Delivery")
+    st.write("📊 Analytics")
+
+    st.divider()
+
+    st.subheader("Technology")
+
+    st.write("🐍 Python")
+    st.write("🧩 OOP")
+    st.write("🎨 Streamlit")
+
+    st.divider()
+
+    st.caption(
+        "Portfolio Project"
+    )
+
+
+# ============================================================
+# MAIN HEADER
+# ============================================================
+
+st.title("🍔 Smart Food Corner")
+
+st.subheader(
+    "Food Ordering & Restaurant Analytics"
 )
+
+st.write(
+    "A smart food ordering application that combines "
+    "customer management, order tracking, delivery "
+    "operations and restaurant insights."
+)
+
 
 st.divider()
 
 
 # ============================================================
-# 1. CUSTOMER
+# DASHBOARD
 # ============================================================
 
-st.header("1. Create Customer")
+st.header("🏠 Dashboard")
+
+st.write(
+    "Welcome! Here's a quick overview of the application."
+)
+
+
+# ============================================================
+# DASHBOARD METRICS
+# ============================================================
+
+col1, col2, col3, col4 = st.columns(4)
+
+
+# Customer
+with col1:
+
+    if st.session_state.customer:
+
+        st.metric(
+            "👤 Customer",
+            st.session_state.customer._name
+        )
+
+    else:
+
+        st.metric(
+            "👤 Customer",
+            "Not Created"
+        )
+
+
+# Wallet
+with col2:
+
+    if st.session_state.customer:
+
+        st.metric(
+            "💰 Wallet",
+            f"₹{st.session_state.customer._wallet_balance:.0f}"
+        )
+
+    else:
+
+        st.metric(
+            "💰 Wallet",
+            "₹0"
+        )
+
+
+# Order
+with col3:
+
+    if st.session_state.order:
+
+        st.metric(
+            "📦 Order",
+            st.session_state.order._status
+        )
+
+    else:
+
+        st.metric(
+            "📦 Order",
+            "No Order"
+        )
+
+
+# Delivery Partner
+with col4:
+
+    if st.session_state.delivery_partner:
+
+        if st.session_state.delivery_partner.is_available:
+
+            status = "Available"
+
+        else:
+
+            status = "Busy"
+
+        st.metric(
+            "🛵 Partner",
+            status
+        )
+
+    else:
+
+        st.metric(
+            "🛵 Partner",
+            "Not Created"
+        )
+
+
+st.divider()
+
+
+# ============================================================
+# APPLICATION MODULES
+# ============================================================
+
+st.header("✨ Explore the Application")
+
 
 col1, col2, col3 = st.columns(3)
 
+
 with col1:
-    customer_name = st.text_input(
-        "Customer Name",
-        placeholder="Enter customer name"
+
+    st.subheader("👤 Customer")
+
+    st.write(
+        "Create a customer profile, "
+        "manage wallet balance and "
+        "track order history."
     )
+
 
 with col2:
-    customer_phone = st.text_input(
-        "Phone",
-        placeholder="Enter phone number"
+
+    st.subheader("🍽️ Food Ordering")
+
+    st.write(
+        "Browse the restaurant menu, "
+        "select food items and place orders."
     )
+
 
 with col3:
-    customer_address = st.text_input(
-        "Address",
-        placeholder="Enter delivery address"
-    )
 
+    st.subheader("🛵 Delivery")
 
-if st.button(
-    "👤 Create Customer",
-    type="primary"
-):
-
-    if (
-        customer_name
-        and customer_phone
-        and customer_address
-    ):
-
-        st.session_state.customer = Customer(
-            customer_name,
-            customer_phone,
-            customer_address,
-        )
-
-        st.success(
-            f"Customer '{customer_name}' created successfully!"
-        )
-
-    else:
-
-        st.warning(
-            "Please enter name, phone and address."
-        )
-
-
-if st.session_state.customer:
-
-    customer = st.session_state.customer
-
-    st.info(
-        f"👤 Customer: {customer._name}   |   "
-        f"💰 Wallet: ₹{customer._wallet_balance:.2f}"
+    st.write(
+        "Assign delivery partners, "
+        "accept orders and complete "
+        "delivery using OTP verification."
     )
 
 
@@ -222,49 +275,30 @@ st.divider()
 
 
 # ============================================================
-# 2. WALLET
+# RESTAURANT INFORMATION
 # ============================================================
 
-st.header("2. Add Wallet Balance")
+st.header("🍽️ Restaurant")
 
-wallet_amount = st.number_input(
-    "Amount",
-    min_value=0.0,
-    step=100.0,
-    format="%.2f"
-)
+restaurant_col1, restaurant_col2 = st.columns(2)
 
 
-if st.button("💰 Add Money"):
+with restaurant_col1:
 
-    if st.session_state.customer is None:
+    st.subheader(
+        restaurant.name
+    )
 
-        st.warning(
-            "Create a customer first."
-        )
-
-    elif wallet_amount <= 0:
-
-        st.warning(
-            "Enter an amount greater than 0."
-        )
-
-    else:
-
-        st.session_state.customer.add_to_wallet(
-            wallet_amount
-        )
-
-        st.success(
-            f"₹{wallet_amount:.2f} added to wallet."
-        )
+    st.write(
+        f"📍 {restaurant.location}"
+    )
 
 
-if st.session_state.customer:
+with restaurant_col2:
 
     st.metric(
-        "Current Wallet Balance",
-        f"₹{st.session_state.customer._wallet_balance:.2f}"
+        "Menu Items",
+        len(restaurant.get_menu())
     )
 
 
@@ -272,166 +306,37 @@ st.divider()
 
 
 # ============================================================
-# 3. RESTAURANT MENU
+# CURRENT ORDER
 # ============================================================
 
-st.header("3. Restaurant Menu")
-
-st.write(
-    f"🍽️ **{restaurant.name}** — "
-    f"📍 {restaurant.location}"
-)
-
-
-menu_data = []
-
-for item in restaurant.get_menu():
-
-    menu_data.append(
-        {
-            "Item": item.name,
-            "Price": f"₹{item.price:.2f}",
-            "Type": (
-                "🟢 Veg"
-                if item.is_veg
-                else "🔴 Non-Veg"
-            ),
-        }
-    )
-
-
-st.table(menu_data)
-
-
-st.divider()
-
-
-# ============================================================
-# 4. PLACE ORDER
-# ============================================================
-
-st.header("4. Place Order")
-
-item_names = [
-    item.name
-    for item in restaurant.get_menu()
-]
-
-
-selected_items = st.multiselect(
-    "Select food items",
-    item_names,
-    placeholder="Choose food items..."
-)
-
-
-if selected_items:
-
-    selected_objects = [
-        item
-        for item in restaurant.get_menu()
-        if item.name in selected_items
-    ]
-
-    subtotal = sum(
-        item.price
-        for item in selected_objects
-    )
-
-    gst = subtotal * 0.05
-    packaging = 20
-    total = subtotal + gst + packaging
-
-    st.info(
-        f"Subtotal: ₹{subtotal:.2f}  |  "
-        f"GST (5%): ₹{gst:.2f}  |  "
-        f"Packaging: ₹{packaging:.2f}  |  "
-        f"**Total: ₹{total:.2f}**"
-    )
-
-
-if st.button(
-    "🛒 Place Order",
-    type="primary"
-):
-
-    if st.session_state.customer is None:
-
-        st.warning(
-            "Create a customer first."
-        )
-
-    elif not selected_items:
-
-        st.warning(
-            "Select at least one food item."
-        )
-
-    else:
-
-        selected_objects = [
-            item
-            for item in restaurant.get_menu()
-            if item.name in selected_items
-        ]
-
-        order = st.session_state.customer.place_order(
-            restaurant,
-            selected_objects,
-        )
-
-        st.session_state.order = order
-
-        st.success(
-            f"Order #{order._order_id} placed successfully!"
-        )
-
-        st.warning(
-            f"🔐 Delivery OTP: {order._otp} "
-            "(shown here for project/demo purposes)"
-        )
-
-
-st.divider()
-
-
-# ============================================================
-# 5. ORDER STATUS
-# ============================================================
-
-st.header("5. Order Status")
-
+st.header("📦 Current Order")
 
 if st.session_state.order:
 
     order = st.session_state.order
 
-    c1, c2, c3 = st.columns(3)
+    order_col1, order_col2, order_col3 = st.columns(3)
 
-    with c1:
+    with order_col1:
 
         st.metric(
             "Order ID",
             order._order_id
         )
 
-    with c2:
+    with order_col2:
 
         st.metric(
             "Status",
             order._status
         )
 
-    with c3:
+    with order_col3:
 
         st.metric(
-            "Estimated Time",
-            f"{order.estimated_time()} min"
+            "Bill",
+            f"₹{order.calculate_bill():.2f}"
         )
-
-    st.write(
-        f"💳 **Bill:** ₹{order.calculate_bill():.2f}"
-    )
 
 else:
 
@@ -444,245 +349,56 @@ st.divider()
 
 
 # ============================================================
-# 6. DELIVERY PARTNER
+# QUICK START
 # ============================================================
 
-st.header("6. Create Delivery Partner")
+st.header("🚀 Quick Start")
 
-col1, col2, col3 = st.columns(3)
+st.write(
+    "To use the application:"
+)
 
-with col1:
+st.write(
+    "1. Create a customer"
+)
 
-    partner_name = st.text_input(
-        "Partner Name",
-        placeholder="Enter partner name"
-    )
+st.write(
+    "2. Add money to the wallet"
+)
 
-with col2:
+st.write(
+    "3. Browse the menu"
+)
 
-    partner_phone = st.text_input(
-        "Partner Phone",
-        placeholder="Enter phone number"
-    )
+st.write(
+    "4. Place an order"
+)
 
-with col3:
+st.write(
+    "5. Create a delivery partner"
+)
 
-    vehicle = st.selectbox(
-        "Vehicle",
-        [
-            "Bike",
-            "Scooter",
-            "Cycle"
-        ]
-    )
+st.write(
+    "6. Accept the order"
+)
 
+st.write(
+    "7. Verify the OTP"
+)
 
-if st.button(
-    "🛵 Create Delivery Partner"
-):
-
-    if partner_name and partner_phone:
-
-        st.session_state.delivery_partner = (
-            DeliveryPartner(
-                partner_name,
-                partner_phone,
-                vehicle,
-            )
-        )
-
-        st.success(
-            f"Delivery partner '{partner_name}' created."
-        )
-
-    else:
-
-        st.warning(
-            "Enter partner name and phone."
-        )
-
-
-if st.session_state.delivery_partner:
-
-    partner = st.session_state.delivery_partner
-
-    availability = (
-        "Available"
-        if partner.is_available
-        else "Busy"
-    )
-
-    st.info(
-        f"🛵 Partner: {partner._name}   |   "
-        f"🚗 Vehicle: {partner.vehicle}   |   "
-        f"Status: {availability}"
-    )
-
-
-st.divider()
-
-
-# ============================================================
-# 7. ACCEPT ORDER
-# ============================================================
-
-st.header("7. Accept Order")
-
-
-if st.button(
-    "✅ Accept Order"
-):
-
-    if st.session_state.order is None:
-
-        st.warning(
-            "Place an order first."
-        )
-
-    elif st.session_state.delivery_partner is None:
-
-        st.warning(
-            "Create a delivery partner first."
-        )
-
-    elif not st.session_state.delivery_partner.is_available:
-
-        st.warning(
-            "Delivery partner is already busy."
-        )
-
-    else:
-
-        st.session_state.delivery_partner.accept_order(
-            st.session_state.order
-        )
-
-        st.success(
-            "Order accepted by delivery partner."
-        )
-
-
-st.divider()
-
-
-# ============================================================
-# 8. OTP AND DELIVERY
-# ============================================================
-
-st.header("8. Enter OTP & Complete Delivery")
-
-otp = st.number_input(
-    "Enter 4-digit OTP",
-    min_value=1000,
-    max_value=9999,
-    step=1
+st.write(
+    "8. Complete the delivery"
 )
 
 
-if st.button(
-    "🚚 Complete Delivery",
-    type="primary"
-):
-
-    if st.session_state.order is None:
-
-        st.warning(
-            "No order available."
-        )
-
-    elif st.session_state.delivery_partner is None:
-
-        st.warning(
-            "Create a delivery partner first."
-        )
-
-    elif st.session_state.order._status != "Accepted":
-
-        st.warning(
-            "The order must be accepted before delivery."
-        )
-
-    else:
-
-        order = st.session_state.order
-        partner = st.session_state.delivery_partner
-
-        # Check OTP first.
-        if order.verify_otp(int(otp)):
-
-            partner.deliver(
-                order,
-                int(otp)
-            )
-
-            st.success(
-                f"🎉 Order #{order._order_id} "
-                "delivered successfully!"
-            )
-
-            st.balloons()
-
-        else:
-
-            st.error(
-                "❌ Invalid OTP. Delivery not completed."
-            )
-
-
 st.divider()
-
-
-# ============================================================
-# 9. DELIVERY SUMMARY
-# ============================================================
-
-st.header("9. Delivery Summary")
-
-
-if st.session_state.order:
-
-    order = st.session_state.order
-
-    st.write(
-        f"**Order ID:** #{order._order_id}"
-    )
-
-    st.write(
-        f"**Status:** {order._status}"
-    )
-
-    st.write(
-        f"**Total Bill:** "
-        f"₹{order.calculate_bill():.2f}"
-    )
-
-    if st.session_state.delivery_partner:
-
-        partner = st.session_state.delivery_partner
-
-        st.write(
-            f"**Delivery Partner:** {partner._name}"
-        )
-
-        st.write(
-            f"**Vehicle:** {partner.vehicle}"
-        )
-
-else:
-
-    st.info(
-        "Complete the order flow to see "
-        "the final summary."
-    )
 
 
 # ============================================================
 # FOOTER
 # ============================================================
 
-st.divider()
-
 st.caption(
-    "🍔 Food Delivery OOP Project • "
-    "Built with Python + Streamlit"
+    "🍔 Smart Food Corner • "
+    "Python OOP + Streamlit • Portfolio Project"
 )
