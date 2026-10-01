@@ -1,4 +1,3 @@
-```python
 import streamlit as st
 from food_delivery import Customer, DeliveryPartner, MenuItem, Restaurant
 
