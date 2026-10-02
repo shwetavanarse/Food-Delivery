@@ -821,7 +821,6 @@ elif page == "📦 My Order":
             "🛒 No order has been placed yet."
         )
 
-
 # ============================================================
 # DELIVERY
 # ============================================================
@@ -900,7 +899,7 @@ elif page == "🛵 Delivery":
             else:
 
                 st.warning(
-                    "Enter partner name and phone."
+                    "Please enter partner name and phone number."
                 )
 
     st.divider()
@@ -961,13 +960,13 @@ elif page == "🛵 Delivery":
     if st.session_state.order is None:
 
         st.info(
-            "Place an order before assigning a delivery partner."
+            "🛒 Place an order before assigning a delivery partner."
         )
 
     elif st.session_state.delivery_partner is None:
 
         st.info(
-            "Create a delivery partner first."
+            "👤 Create a delivery partner first."
         )
 
     else:
@@ -980,35 +979,49 @@ elif page == "🛵 Delivery":
         with col1:
 
             st.write(
-                f"**Order:** {order._order_id}"
+                f"**Order ID:** {order._order_id}"
             )
 
             st.write(
-                f"**Status:** {order._status}"
+                f"**Order Status:** {order._status}"
             )
 
         with col2:
 
-            if partner.is_available:
+            if order._status == "Placed":
 
-                if st.button(
-                    "✅ Accept Order",
-                    type="primary",
-                    use_container_width=True
-                ):
+                if partner.is_available:
 
-                    partner.accept_order(order)
+                    if st.button(
+                        "✅ Accept Order",
+                        type="primary",
+                        use_container_width=True
+                    ):
 
-                    st.success(
-                        f"Order {order._order_id} accepted!"
+                        partner.accept_order(order)
+
+                        st.success(
+                            f"Order {order._order_id} accepted successfully!"
+                        )
+
+                        st.rerun()
+
+                else:
+
+                    st.warning(
+                        "⚠️ Delivery partner is currently busy."
                     )
 
-                    st.rerun()
+            elif order._status == "Accepted":
 
-            else:
+                st.info(
+                    "🛵 This order has already been accepted."
+                )
 
-                st.warning(
-                    "Delivery partner is currently busy."
+            elif order._status == "Delivered":
+
+                st.success(
+                    "🎉 This order has already been delivered."
                 )
 
     st.divider()
@@ -1017,18 +1030,18 @@ elif page == "🛵 Delivery":
     # COMPLETE DELIVERY
     # --------------------------------------------------------
 
-    st.subheader("🔐 Complete Delivery")
+    st.subheader("🎉 Complete Delivery")
 
     if st.session_state.order is None:
 
         st.info(
-            "No order available."
+            "🛒 No order available for delivery."
         )
 
     elif st.session_state.delivery_partner is None:
 
         st.info(
-            "Create a delivery partner first."
+            "👤 Create a delivery partner first."
         )
 
     else:
@@ -1045,50 +1058,70 @@ elif page == "🛵 Delivery":
         elif order._status == "Accepted":
 
             st.info(
-                "📍 Order is out for delivery. "
-                "Enter the customer's OTP."
+                "📍 Order is out for delivery."
             )
 
-            otp = st.number_input(
-                "Enter 4-digit OTP",
-                min_value=1000,
-                max_value=9999,
-                step=1,
-                key="delivery_otp"
+            st.write(
+                f"**Order:** {order._order_id}"
             )
+
+            st.write(
+                f"**Delivery Partner:** {partner._name}"
+            )
+
+            st.write(
+                f"**Vehicle:** {partner.vehicle}"
+            )
+
+            st.write("")
 
             if st.button(
-                "🎉 Complete Delivery",
+                "🎉 Mark as Delivered",
                 type="primary",
                 use_container_width=True
             ):
 
-                partner.deliver(
-                    order,
-                    int(otp)
-                )
+                # Use the delivery method without OTP.
+                # This assumes your DeliveryPartner.deliver()
+                # method can complete the order without OTP.
+                try:
 
-                if order._status == "Delivered":
+                    partner.deliver(order)
 
-                    st.success(
-                        f"🎉 Order {order._order_id} "
-                        "delivered successfully!"
-                    )
+                    if order._status == "Delivered":
 
-                    st.rerun()
+                        st.success(
+                            f"🎉 Order {order._order_id} "
+                            "delivered successfully!"
+                        )
 
-                else:
+                        st.rerun()
+
+                    else:
+
+                        st.warning(
+                            "The order could not be marked as delivered."
+                        )
+
+                except TypeError:
 
                     st.error(
-                        "❌ Incorrect OTP."
+                        "Your current DeliveryPartner.deliver() "
+                        "method still requires an OTP."
+                    )
+
+                    st.info(
+                        "If this message appears, send me your "
+                        "`DeliveryPartner` class and I will make "
+                        "one small change to remove the OTP."
                     )
 
         elif order._status == "Delivered":
 
             st.success(
-                "🎉 This order has already been delivered."
+                f"🎉 Order {order._order_id} "
+                "has already been delivered."
             )
-
 
 # ============================================================
 # ANALYTICS
