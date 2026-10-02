@@ -479,60 +479,61 @@ if page == "🏠 Dashboard":
 
     st.divider()
 
- st.subheader("✨ Explore Smart Food Corner")
+        st.subheader("✨ Explore Smart Food Corner")
 
-col1, col2, col3 = st.columns(3, gap="medium")
+    col1, col2, col3 = st.columns(3, gap="medium")
 
-with col1:
+    with col1:
 
-    st.markdown(
-        """
-        <div class="feature-card">
-            <div class="feature-icon">👤</div>
-            <div class="feature-title">Customer</div>
-            <div class="feature-text">
-                Create a customer profile,
-                manage your wallet and
-                place food orders.
+        st.markdown(
+            """
+            <div class="feature-card">
+                <div class="feature-icon">👤</div>
+                <div class="feature-title">Customer</div>
+                <div class="feature-text">
+                    Create a customer profile,
+                    manage your wallet and
+                    place food orders.
+                </div>
             </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+            """,
+            unsafe_allow_html=True,
+        )
 
-with col2:
+    with col2:
 
-    st.markdown(
-        """
-        <div class="feature-card">
-            <div class="feature-icon">🍽️</div>
-            <div class="feature-title">Food Ordering</div>
-            <div class="feature-text">
-                Explore the menu,
-                select your favourite food
-                and place an order.
+        st.markdown(
+            """
+            <div class="feature-card">
+                <div class="feature-icon">🍽️</div>
+                <div class="feature-title">Food Ordering</div>
+                <div class="feature-text">
+                    Explore the menu,
+                    select your favourite food
+                    and place an order.
+                </div>
             </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+            """,
+            unsafe_allow_html=True,
+        )
 
-with col3:
+    with col3:
 
-    st.markdown(
-        """
-        <div class="feature-card">
-            <div class="feature-icon">📊</div>
-            <div class="feature-title">Analytics</div>
-            <div class="feature-text">
-                Analyze orders, revenue,
-                popular food items and
-                customer preferences.
+        st.markdown(
+            """
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <div class="feature-title">Analytics</div>
+                <div class="feature-text">
+                    Analyze orders, revenue,
+                    popular food items and
+                    customer preferences.
+                </div>
             </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+            """,
+            unsafe_allow_html=True,
+        )
+   
     st.divider()
 
     st.subheader("🍽️ Restaurant Snapshot")
