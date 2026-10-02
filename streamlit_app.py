@@ -1275,23 +1275,22 @@ elif page == "🛵 Delivery":
                 )
 
     st.divider()
-
     # --------------------------------------------------------
     # COMPLETE DELIVERY
     # --------------------------------------------------------
 
-    st.subheader("🎉 Complete Delivery")
+    st.subheader("🚚 Complete Delivery")
 
     if st.session_state.order is None:
 
         st.info(
-            "🛒 No order available for delivery."
+            "No order available."
         )
 
     elif st.session_state.delivery_partner is None:
 
         st.info(
-            "👤 Create a delivery partner first."
+            "Create a delivery partner first."
         )
 
     else:
@@ -1311,32 +1310,20 @@ elif page == "🛵 Delivery":
                 "📍 Order is out for delivery."
             )
 
-            st.write(
-                f"**Order:** {order._order_id}"
-            )
-
-            st.write(
-                f"**Delivery Partner:** {partner._name}"
-            )
-
-            st.write(
-                f"**Vehicle:** {partner.vehicle}"
-            )
-
-            st.write("")
-
             if st.button(
                 "🎉 Mark as Delivered",
                 type="primary",
                 use_container_width=True
             ):
 
-                # Use the delivery method without OTP.
-                # This assumes your DeliveryPartner.deliver()
-                # method can complete the order without OTP.
                 try:
 
-                    partner.deliver(order)
+                    # Use the demo OTP internally.
+                    # User does not need to enter it.
+                    partner.deliver(
+                        order,
+                        order._otp
+                    )
 
                     if order._status == "Delivered":
 
@@ -1349,30 +1336,21 @@ elif page == "🛵 Delivery":
 
                     else:
 
-                        st.warning(
-                            "The order could not be marked as delivered."
+                        st.error(
+                            "Unable to complete delivery."
                         )
 
-                except TypeError:
+                except Exception as e:
 
                     st.error(
-                        "Your current DeliveryPartner.deliver() "
-                        "method still requires an OTP."
-                    )
-
-                    st.info(
-                        "If this message appears, send me your "
-                        "`DeliveryPartner` class and I will make "
-                        "one small change to remove the OTP."
+                        f"Unable to complete delivery: {e}"
                     )
 
         elif order._status == "Delivered":
 
             st.success(
-                f"🎉 Order {order._order_id} "
-                "has already been delivered."
+                "🎉 This order has already been delivered."
             )
-
 # ============================================================
 # ANALYTICS
 # ============================================================
