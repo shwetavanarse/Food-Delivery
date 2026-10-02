@@ -87,6 +87,41 @@ st.markdown(
     line-height: 1.2;
 }
 
+/* ================================
+   FEATURE CARDS
+   ================================ */
+
+.feature-card {
+    background-color: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 20px;
+    padding: 24px;
+    min-height: 170px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.feature-icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.feature-title {
+    font-size: 20px;
+    font-weight: 750;
+    margin-bottom: 8px;
+}
+
+.feature-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666666;
+}
     /* ================================
        HERO SECTION
        ================================ */
@@ -444,43 +479,60 @@ if page == "🏠 Dashboard":
 
     st.divider()
 
-    st.subheader("✨ Explore Smart Food Corner")
+ st.subheader("✨ Explore Smart Food Corner")
 
-    col1, col2, col3 = st.columns(3)
+col1, col2, col3 = st.columns(3, gap="medium")
 
-    with col1:
+with col1:
 
-        st.markdown(
-            """
-            ### 👤 Customer
+    st.markdown(
+        """
+        <div class="feature-card">
+            <div class="feature-icon">👤</div>
+            <div class="feature-title">Customer</div>
+            <div class="feature-text">
+                Create a customer profile,
+                manage your wallet and
+                place food orders.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-            Create a customer profile and
-            manage wallet balance.
-            """
-        )
+with col2:
 
-    with col2:
+    st.markdown(
+        """
+        <div class="feature-card">
+            <div class="feature-icon">🍽️</div>
+            <div class="feature-title">Food Ordering</div>
+            <div class="feature-text">
+                Explore the menu,
+                select your favourite food
+                and place an order.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-        st.markdown(
-            """
-            ### 🍽️ Food Ordering
+with col3:
 
-            Browse the menu, select food
-            and place an order.
-            """
-        )
-
-    with col3:
-
-        st.markdown(
-            """
-            ### 📊 Analytics
-
-            Understand orders, revenue,
-            popular food and preferences.
-            """
-        )
-
+    st.markdown(
+        """
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <div class="feature-title">Analytics</div>
+            <div class="feature-text">
+                Analyze orders, revenue,
+                popular food items and
+                customer preferences.
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     st.divider()
 
     st.subheader("🍽️ Restaurant Snapshot")
