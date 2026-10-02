@@ -19,7 +19,6 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-
 # ============================================================
 # CUSTOM CSS
 # ============================================================
@@ -28,73 +27,182 @@ st.markdown(
     """
     <style>
 
+    /* ================================
+       MAIN APP
+       ================================ */
+
     .main {
-        background-color: #f8f9fb;
+        background-color: #f7f8fa;
     }
 
     .block-container {
         padding-top: 2rem;
         padding-bottom: 3rem;
+        max-width: 1400px;
     }
 
+
+    /* ================================
+       SIDEBAR
+       ================================ */
+
+    [data-testid="stSidebar"] {
+        background-color: #ffffff;
+        border-right: 1px solid #eeeeee;
+    }
+
+    [data-testid="stSidebar"] h1 {
+        font-size: 24px;
+        font-weight: 800;
+    }
+
+    [data-testid="stSidebar"] .stRadio label {
+        font-weight: 500;
+    }
+
+
+    /* ================================
+       HERO SECTION
+       ================================ */
+
     .hero {
-        padding: 30px;
-        border-radius: 20px;
+        padding: 38px 40px;
+        border-radius: 24px;
         background: linear-gradient(
             135deg,
-            #ff6b35,
-            #ff8c42
+            #ff6b35 0%,
+            #ff8c42 100%
         );
         color: white;
-        margin-bottom: 25px;
+        margin-bottom: 28px;
+        box-shadow: 0 10px 30px rgba(255, 107, 53, 0.20);
     }
 
     .hero h1 {
-        font-size: 42px;
-        margin-bottom: 5px;
+        font-size: 44px;
+        font-weight: 800;
+        margin: 0 0 8px 0;
+        letter-spacing: -1px;
     }
 
     .hero p {
         font-size: 17px;
-        margin-bottom: 0;
+        margin: 0;
+        opacity: 0.95;
     }
 
-    .food-card {
-        padding: 20px;
-        border-radius: 18px;
-        background: white;
-        border: 1px solid #eeeeee;
-        margin-bottom: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    }
 
-    .food-title {
-        font-size: 21px;
-        font-weight: 700;
-    }
-
-    .food-price {
-        font-size: 20px;
-        font-weight: 700;
-        color: #ff6b35;
-    }
-
-    .status-card {
-        padding: 18px;
-        border-radius: 15px;
-        background: white;
-        border: 1px solid #eeeeee;
-    }
+    /* ================================
+       SECTION TITLES
+       ================================ */
 
     .section-title {
-        font-size: 28px;
-        font-weight: 700;
+        font-size: 30px;
+        font-weight: 800;
         margin-bottom: 5px;
+        letter-spacing: -0.5px;
     }
 
     .small-text {
         color: #666666;
     }
+
+
+    /* ================================
+       FOOD CARDS
+       ================================ */
+
+    .food-card {
+        padding: 24px;
+        min-height: 135px;
+        border-radius: 20px;
+        background: #ffffff;
+        border: 1px solid #eeeeee;
+        margin-bottom: 12px;
+        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s ease;
+    }
+
+    .food-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .food-title {
+        font-size: 21px;
+        font-weight: 750;
+        color: #222222;
+    }
+
+    .food-price {
+        font-size: 22px;
+        font-weight: 800;
+        color: #ff6b35;
+    }
+
+
+    /* ================================
+       METRIC CARDS
+       ================================ */
+
+    [data-testid="stMetric"] {
+        background-color: #ffffff;
+        padding: 18px;
+        border-radius: 18px;
+        border: 1px solid #eeeeee;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    }
+
+
+    /* ================================
+       BUTTONS
+       ================================ */
+
+    .stButton > button {
+        border-radius: 10px;
+        font-weight: 650;
+        min-height: 42px;
+    }
+
+
+    /* ================================
+       INPUT FIELDS
+       ================================ */
+
+    .stTextInput input,
+    .stNumberInput input {
+        border-radius: 10px;
+    }
+
+    .stSelectbox div[data-baseweb="select"] {
+        border-radius: 10px;
+    }
+
+
+    /* ================================
+       STATUS / INFO BOXES
+       ================================ */
+
+    [data-testid="stAlert"] {
+        border-radius: 12px;
+    }
+
+
+    /* ================================
+       DIVIDERS
+       ================================ */
+
+    hr {
+        margin-top: 25px;
+        margin-bottom: 25px;
+        border: none;
+        border-top: 1px solid #e8e8e8;
+    }
+
+
+    /* ================================
+       FOOTER
+       ================================ */
 
     footer {
         visibility: hidden;
@@ -104,8 +212,6 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
-
 # ============================================================
 # SESSION STATE
 # ============================================================
