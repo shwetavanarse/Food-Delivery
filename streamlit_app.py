@@ -479,7 +479,7 @@ if page == "🏠 Dashboard":
 
     st.divider()
 
-        st.subheader("✨ Explore Smart Food Corner")
+    st.subheader("✨ Explore Smart Food Corner")
 
     col1, col2, col3 = st.columns(3, gap="medium")
 
