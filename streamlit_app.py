@@ -201,6 +201,42 @@ st.markdown(
         color: #ff6b35;
     }
 
+/* ================================
+   PREMIUM KPI CARDS
+   ================================ */
+
+.kpi-card {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 18px;
+    padding: 20px;
+    min-height: 125px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
+    transition: all 0.25s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.09);
+}
+
+.kpi-label {
+    font-size: 14px;
+    color: #777777;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.kpi-value {
+    font-size: 25px;
+    font-weight: 800;
+    color: #343744;
+}
+
+.kpi-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
 
     /* ================================
        METRIC CARDS
@@ -415,23 +451,29 @@ if page == "🏠 Dashboard":
 
     st.subheader("📊 Application Overview")
 
-    col1, col2, col3, col4 = st.columns(
-    [1, 1, 1, 1],
-    gap="medium"
-)
+    col1, col2, col3, col4 = st.columns(4, gap="medium")
 
+    # Customer
     with col1:
 
-        if customer:
-            customer_value = customer._name
-        else:
-            customer_value = "-"
-
-        st.metric(
-            "👤 Customer",
-            customer_value
+        customer_value = (
+            customer._name
+            if customer
+            else "Not Created"
         )
 
+        st.markdown(
+            f"""
+            <div class="kpi-card">
+                <div class="kpi-icon">👤</div>
+                <div class="kpi-label">CUSTOMER</div>
+                <div class="kpi-value">{customer_value}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    # Wallet
     with col2:
 
         wallet = (
@@ -440,25 +482,38 @@ if page == "🏠 Dashboard":
             else 0
         )
 
-        st.metric(
-            "💰 Wallet",
-            f"₹{wallet:.0f}"
+        st.markdown(
+            f"""
+            <div class="kpi-card">
+                <div class="kpi-icon">💰</div>
+                <div class="kpi-label">WALLET BALANCE</div>
+                <div class="kpi-value">₹{wallet:.0f}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
+    # Order
     with col3:
 
-        if st.session_state.order:
-            order_status = (
-                st.session_state.order._status
-            )
-        else:
-            order_status = "No Order"
-
-        st.metric(
-            "📦 Order",
-            order_status
+        order_status = (
+            st.session_state.order._status
+            if st.session_state.order
+            else "No Order"
         )
 
+        st.markdown(
+            f"""
+            <div class="kpi-card">
+                <div class="kpi-icon">📦</div>
+                <div class="kpi-label">ORDER STATUS</div>
+                <div class="kpi-value">{order_status}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    # Delivery Partner
     with col4:
 
         if st.session_state.delivery_partner:
@@ -470,11 +525,18 @@ if page == "🏠 Dashboard":
             )
 
         else:
-            partner_status = "-"
 
-        st.metric(
-            "🛵 Partner",
-            partner_status
+            partner_status = "Not Created"
+
+        st.markdown(
+            f"""
+            <div class="kpi-card">
+                <div class="kpi-icon">🛵</div>
+                <div class="kpi-label">DELIVERY PARTNER</div>
+                <div class="kpi-value">{partner_status}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
     st.divider()
