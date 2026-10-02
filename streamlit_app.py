@@ -60,6 +60,32 @@ st.markdown(
         font-weight: 500;
     }
 
+ /* ================================
+   METRIC CARDS
+   ================================ */
+
+[data-testid="stMetric"] {
+    background-color: #ffffff;
+    padding: 16px 18px;
+    border-radius: 18px;
+    border: 1px solid #eeeeee;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    min-height: 105px;
+}
+
+[data-testid="stMetricLabel"] {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+[data-testid="stMetricValue"] {
+    font-size: 25px;
+    font-weight: 750;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    line-height: 1.2;
+}
 
     /* ================================
        HERO SECTION
@@ -354,14 +380,17 @@ if page == "🏠 Dashboard":
 
     st.subheader("📊 Application Overview")
 
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4 = st.columns(
+    [1, 1, 1, 1],
+    gap="medium"
+)
 
     with col1:
 
         if customer:
             customer_value = customer._name
         else:
-            customer_value = "Not Created"
+            customer_value = "-"
 
         st.metric(
             "👤 Customer",
@@ -406,7 +435,7 @@ if page == "🏠 Dashboard":
             )
 
         else:
-            partner_status = "Not Created"
+            partner_status = "-"
 
         st.metric(
             "🛵 Partner",
