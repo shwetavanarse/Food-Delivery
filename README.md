@@ -63,6 +63,31 @@ The goal of this project is to apply Python programming concepts to a practical 
 
 Experience the application directly in your browser.
 
+## 📸 Application Preview
+
+Explore the main features of Smart Food Corner through the screenshots below.
+
+### 🏠 Dashboard
+The main dashboard provides an overview of the application, customer status, wallet balance, and restaurant information.
+
+![Smart Food Corner Dashboard](<img width="295" height="254" alt="dashboard" src="https://github.com/user-attachments/assets/1f0bc276-e25c-4e6a-81e9-183e1953a036" />
+)
+
+### 🍽️ Restaurant Menu
+Browse the available food items, prices, and vegetarian or non-vegetarian categories.
+
+![Smart Food Corner Menu](screenshots/menu.png)
+
+### 🛒 Food Ordering
+The ordering interface lets customers create a profile and proceed through the food ordering workflow.
+
+![Smart Food Corner Order Food](screenshots/order-food.png)
+
+### 📊 Restaurant Analytics
+View key restaurant metrics, including total orders, revenue, average order value, delivery counts, and order status.
+
+![Smart Food Corner Analytics](screenshots/analytics.png)
+
 ## 📂 Project Structure
 
 ```text
