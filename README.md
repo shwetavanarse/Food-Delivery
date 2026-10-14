@@ -69,24 +69,27 @@ Explore the main features of Smart Food Corner through the screenshots below.
 
 ### 🏠 Dashboard
 The main dashboard provides an overview of the application, customer status, wallet balance, and restaurant information.
+<img width="295" height="254" alt="dashboard" src="https://github.com/user-attachments/assets/68f4d4da-6266-4303-a3da-431812f9ad79" />
 
-![Smart Food Corner Dashboard](<img width="295" height="254" alt="dashboard" src="https://github.com/user-attachments/assets/1f0bc276-e25c-4e6a-81e9-183e1953a036" />
-)
 
 ### 🍽️ Restaurant Menu
 Browse the available food items, prices, and vegetarian or non-vegetarian categories.
+<img width="296" height="230" alt="menu" src="https://github.com/user-attachments/assets/5663d473-d1a7-4cde-ab15-fef5d5d6928f" />
 
-![Smart Food Corner Menu](screenshots/menu.png)
 
 ### 🛒 Food Ordering
 The ordering interface lets customers create a profile and proceed through the food ordering workflow.
+<img width="299" height="194" alt="orderfood" src="https://github.com/user-attachments/assets/214aa9f4-ebe0-45f9-8aac-28cc525e2cca" />
 
-![Smart Food Corner Order Food](screenshots/order-food.png)
+
+### Delivery
+<img width="299" height="193" alt="delivery" src="https://github.com/user-attachments/assets/128f85ef-9b7b-4e6b-b597-bb8a75273bd2" />
+
 
 ### 📊 Restaurant Analytics
 View key restaurant metrics, including total orders, revenue, average order value, delivery counts, and order status.
+<img width="303" height="195" alt="resturant analytics" src="https://github.com/user-attachments/assets/54bdbd79-6dd3-487b-9697-986afaf8a2af" />
 
-![Smart Food Corner Analytics](screenshots/analytics.png)
 
 ## 📂 Project Structure
 
