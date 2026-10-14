@@ -74,7 +74,7 @@ The main dashboard provides an overview of the application, customer status, wal
 
 ### 🍽️ Restaurant Menu
 Browse the available food items, prices, and vegetarian or non-vegetarian categories.
-<img width="296" height="230" alt="menu" src="https://github.com/user-attachments/assets/5663d473-d1a7-4cde-ab15-fef5d5d6928f" />
+<img width="296" height="230" alt="menu" src="https://github.com/user-attachments/assets/db1c5e91-8523-4d99-a61d-fe37a796c89c" />
 
 
 ### 🛒 Food Ordering
